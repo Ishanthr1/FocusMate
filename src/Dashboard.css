@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/**
+ * ==============================================================
+ * Dashboard Layout
+ * ==============================================================
+ */
+.dashboard {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e8f5 100%);
+    overflow: hidden;
+}
+
+/**
+ * ==============================================================
+ * Sidebar
+ * ==============================================================
+ */
+.sidebar {
+    width: 250px;
+    background: white;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    animation: slideInLeft 0.5s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/**
+ * ==============================================================
+ * Sidebar Navigation
+ * ==============================================================
+ */
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 10px;
+    overflow-y: auto;
+}
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    margin-bottom: 8px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #4a5568;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+}
+
+.nav-item:hover {
+    background: #f7fafc;
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, #5B7BA6 0%, #2C3E50 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(91, 123, 166, 0.3);
+}
+
+.nav-text {
+    flex: 1;
+}
+
+.sidebar-footer {
+    padding: 20px 10px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.profile-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/**
+ * ==============================================================
+ * Main Content Area
+ * ==============================================================
+ */
+.main-content-dashboard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dashboard-header {
+    background: white;
+    padding: 30px 40px;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.welcome-section {
+    animation: fadeInUp 0.7s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+}
+
+.welcome-subtitle {
+    font-size: 16px;
+    color: #718096;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 700px;
+}
+
+/**
+ * ==============================================================
+ * Dashboard Content
+ * ==============================================================
+ */
+.dashboard-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.content-card {
+    background: white;
+    border-radius: 20px;
+    padding: 60px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.6s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/**
+ * ==============================================================
+ * Coming Soon Section
+ * ==============================================================
+ */
+.coming-soon {
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+    max-width: 600px;
+}
+
+.coming-soon h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.feature-description {
+    font-size: 17px;
+    color: #718096;
+    margin-bottom: 35px;
+    line-height: 1.7;
+}
+
+.start-study-btn {
+    background: linear-gradient(135deg, #5B7BA6 0%, #2C3E50 100%);
+    color: white;
+    padding: 16px 50px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(91, 123, 166, 0.3);
+    font-family: 'Poppins', sans-serif;
+}
+
+.start-study-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(91, 123, 166, 0.5);
+}
+
+.start-study-btn:active {
+    transform: translateY(0);
+}
+
+/**
+ * ==============================================================
+ * Responsive Design
+ * ==============================================================
+ */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px;
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    .sidebar-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .dashboard-header {
+        padding: 20px;
+    }
+
+    .welcome-title {
+        font-size: 24px;
+    }
+
+    .welcome-subtitle {
+        font-size: 14px;
+    }
+
+    .content-card {
+        padding: 30px;
+    }
+
+    .coming-soon h2 {
+        font-size: 28px;
+    }
+}
