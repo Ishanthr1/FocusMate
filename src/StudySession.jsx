@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { io } from 'socket.io-client';
 import './StudySession.css';
+
+// Connect to backend
+const socket = io('http://localhost:5000');
 
 function StudySession({ onBack }) {
     const [currentStep, setCurrentStep] = useState('setup'); // 'setup', 'music', 'session'
