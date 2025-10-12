@@ -12,6 +12,7 @@ import base64
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from utils.vision_processor import VisionProcessor
 
 # Load environment variables
 load_dotenv()
@@ -26,20 +27,38 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 # Initialize SocketIO for real-time communication
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
+# Initialize vision processor
+print("🔄 Initializing Vision Processor...")
+vision_processor = VisionProcessor()
+
 # Store active sessions
 active_sessions = {}
-
 
 # ============================================================
 # REST API Endpoints
 # ============================================================
+
+@app.route('/', methods=['GET'])
+def welcome():
+    """Welcome endpoint"""
+    return jsonify({
+        'message': 'Welcome to FocusMate API',
+        'version': '1.0.0',
+        'endpoints': {
+            'health': '/api/health',
+            'start_session': '/api/session/start',
+            'end_session': '/api/session/end'
+        }
+    }), 200
+
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'message': 'FocusMate backend is running'
+        'message': 'FocusMate backend is running',
+        'vision_processor': 'active'
     }), 200
 
 
@@ -69,6 +88,8 @@ def start_session():
             'events': []
         }
 
+        print(f"✅ Session started: {session_id}")
+
         return jsonify({
             'success': True,
             'session_id': session_id,
@@ -97,7 +118,7 @@ def end_session():
             session_data['end_time'] = datetime.now().isoformat()
 
             # TODO: Save to database
-            print(f"Session {session_id} ended. Data:", session_data)
+            print(f"💾 Session {session_id} ended. Total events: {len(session_data['events'])}")
 
             # Remove from active sessions
             del active_sessions[session_id]
@@ -105,7 +126,7 @@ def end_session():
             return jsonify({
                 'success': True,
                 'message': 'Session ended and data saved',
-                'session_data': session_data
+                'total_events': len(session_data['events'])
             }), 200
         else:
             return jsonify({
@@ -127,14 +148,14 @@ def end_session():
 @socketio.on('connect')
 def handle_connect():
     """Client connected"""
-    print('Client connected')
+    print('🔗 Client connected')
     emit('connection_response', {'status': 'connected'})
 
 
 @socketio.on('disconnect')
 def handle_disconnect():
     """Client disconnected"""
-    print('Client disconnected')
+    print('❌ Client disconnected')
 
 
 @socketio.on('video_frame')
@@ -156,22 +177,27 @@ def handle_video_frame(data):
         np_img = np.frombuffer(img_data, dtype=np.uint8)
         frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
-        # TODO: Process frame with ML models (Phase 5)
-        # For now, just return a placeholder response
-        analysis_result = {
-            'session_id': session_id,
-            'timestamp': data.get('timestamp'),
-            'face_detected': True,
-            'emotion': 'focused',
-            'posture': 'good',
-            'distraction_level': 0.1,
-            'suggestion': None
-        }
+        # Analyze frame with ML models
+        analysis_result = vision_processor.analyze_frame(frame)
+        analysis_result['session_id'] = session_id
+        analysis_result['timestamp'] = data.get('timestamp')
+
+        # Log significant events
+        if session_id in active_sessions and analysis_result['suggestion']:
+            active_sessions[session_id]['events'].append({
+                'type': 'detection',
+                'timestamp': datetime.now().isoformat(),
+                'emotion': analysis_result['emotion'],
+                'distraction_level': analysis_result['distraction_level'],
+                'suggestion': analysis_result['suggestion']
+            })
+            print(f"📊 {session_id}: {analysis_result['suggestion']}")
 
         # Emit results back to client
         emit('analysis_result', analysis_result)
 
     except Exception as e:
+        print(f"❌ Error processing frame: {e}")
         emit('analysis_error', {'error': str(e)})
 
 
@@ -179,7 +205,7 @@ def handle_video_frame(data):
 def handle_help_request(data):
     """Handle AI assistant help requests"""
     session_id = data.get('session_id')
-    print(f"Help requested for session {session_id}")
+    print(f"🆘 Help requested for session {session_id}")
 
     # Log event
     if session_id in active_sessions:
@@ -198,6 +224,9 @@ def handle_help_request(data):
 # ============================================================
 
 if __name__ == '__main__':
+    print("=" * 60)
     print("🚀 FocusMate Backend Starting...")
     print("📡 Server running on http://localhost:5000")
+    print("🤖 Vision Processor: ACTIVE")
+    print("=" * 60)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

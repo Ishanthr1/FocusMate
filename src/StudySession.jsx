@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import './StudySession.css';
 
-// Connect to backend
+// Connect to Flask backend
 const socket = io('http://localhost:5000');
 
 function StudySession({ onBack }) {
@@ -19,10 +19,19 @@ function StudySession({ onBack }) {
     const [timeRemaining, setTimeRemaining] = useState(null);
     const [isPaused, setIsPaused] = useState(false);
     const [cameraActive, setCameraActive] = useState(false);
+    const [sessionId, setSessionId] = useState(null);
+    const [currentSuggestion, setCurrentSuggestion] = useState(null);
+    const [analysisData, setAnalysisData] = useState({
+        emotion: 'neutral',
+        posture: 'unknown',
+        distraction_level: 0
+    });
 
     const videoRef = useRef(null);
+    const canvasRef = useRef(null);
     const streamRef = useRef(null);
     const timerIntervalRef = useRef(null);
+    const frameIntervalRef = useRef(null);
 
     // Format time as MM:SS
     const formatTime = (seconds) => {
@@ -65,6 +74,127 @@ function StudySession({ onBack }) {
         }
     };
 
+    // Send frame to backend for analysis
+    const sendFrameToBackend = () => {
+        if (videoRef.current && canvasRef.current && sessionId) {
+            const canvas = canvasRef.current;
+            const video = videoRef.current;
+
+            // Set canvas size to match video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw current video frame to canvas
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to base64 image
+            const frameData = canvas.toDataURL('image/jpeg', 0.8);
+
+            // Send to backend via Socket.IO
+            socket.emit('video_frame', {
+                session_id: sessionId,
+                frame: frameData,
+                timestamp: new Date().toISOString()
+            });
+        }
+    };
+
+    // Start session on backend
+    const startBackendSession = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/session/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: 'user123', // TODO: Get from Clerk
+                    duration: sessionConfig.duration,
+                    subject: sessionConfig.subject,
+                    study_mode: sessionConfig.studyMode,
+                    difficulty: sessionConfig.difficulty,
+                    break_preference: sessionConfig.breakPreference,
+                    distraction_sensitivity: sessionConfig.distractionSensitivity
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                setSessionId(data.session_id);
+                console.log('✅ Backend session started:', data.session_id);
+            }
+        } catch (error) {
+            console.error('Error starting backend session:', error);
+        }
+    };
+
+    // End session on backend
+    const endBackendSession = async () => {
+        if (sessionId) {
+            try {
+                const response = await fetch('http://localhost:5000/api/session/end', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId
+                    })
+                });
+
+                const data = await response.json();
+                console.log('💾 Backend session ended:', data);
+            } catch (error) {
+                console.error('Error ending backend session:', error);
+            }
+        }
+    };
+
+    // Listen for Socket.IO events
+    useEffect(() => {
+        // Connection events
+        socket.on('connect', () => {
+            console.log('🔗 Connected to backend');
+        });
+
+        socket.on('connection_response', (data) => {
+            console.log('Backend response:', data);
+        });
+
+        // Analysis results from ML
+        socket.on('analysis_result', (data) => {
+            console.log('📊 Analysis result:', data);
+
+            setAnalysisData({
+                emotion: data.emotion || 'neutral',
+                posture: data.posture || 'unknown',
+                distraction_level: data.distraction_level || 0
+            });
+
+            // Show suggestion if provided
+            if (data.suggestion) {
+                setCurrentSuggestion(data.suggestion);
+
+                // Auto-hide suggestion after 10 seconds
+                setTimeout(() => {
+                    setCurrentSuggestion(null);
+                }, 10000);
+            }
+        });
+
+        socket.on('analysis_error', (data) => {
+            console.error('❌ Analysis error:', data.error);
+        });
+
+        return () => {
+            socket.off('connect');
+            socket.off('connection_response');
+            socket.off('analysis_result');
+            socket.off('analysis_error');
+        };
+    }, []);
+
     // Timer countdown effect
     useEffect(() => {
         if (currentStep === 'session' && timeRemaining !== null && !isPaused) {
@@ -83,18 +213,28 @@ function StudySession({ onBack }) {
         }
     }, [currentStep, timeRemaining, isPaused]);
 
-    // Start camera when session starts
+    // Start camera and frame processing when session starts
     useEffect(() => {
         if (currentStep === 'session') {
             startCamera();
+            startBackendSession();
+
+            // Send frame every 3 seconds for analysis
+            frameIntervalRef.current = setInterval(() => {
+                sendFrameToBackend();
+            }, 3000);
         }
+
         return () => {
             stopCamera();
             if (timerIntervalRef.current) {
                 clearInterval(timerIntervalRef.current);
             }
+            if (frameIntervalRef.current) {
+                clearInterval(frameIntervalRef.current);
+            }
         };
-    }, [currentStep]);
+    }, [currentStep, sessionId]);
 
     const handleInputChange = (field, value) => {
         setSessionConfig(prev => ({
@@ -124,21 +264,31 @@ function StudySession({ onBack }) {
         setIsPaused(!isPaused);
     };
 
-    const handleEndSession = () => {
+    const handleEndSession = async () => {
         if (confirm('Are you sure you want to end this session?')) {
             stopCamera();
             clearInterval(timerIntervalRef.current);
-            // TODO: Save session data
-            alert('Session ended! Data will be saved to analytics.');
+            clearInterval(frameIntervalRef.current);
+            await endBackendSession();
             if (onBack) onBack();
         }
     };
 
-    const handleSessionComplete = () => {
+    const handleSessionComplete = async () => {
         stopCamera();
+        clearInterval(frameIntervalRef.current);
+        await endBackendSession();
         alert('Session complete! Great work! 🎉');
-        // TODO: Save session data
         if (onBack) onBack();
+    };
+
+    const handleDismissSuggestion = () => {
+        setCurrentSuggestion(null);
+    };
+
+    const handleRequestHelp = () => {
+        socket.emit('request_help', { session_id: sessionId });
+        alert('AI Assistant feature coming soon!');
     };
 
     // Setup Form Screen
@@ -345,6 +495,9 @@ function StudySession({ onBack }) {
     if (currentStep === 'session') {
         return (
             <div className="active-session-screen">
+                {/* Hidden canvas for frame capture */}
+                <canvas ref={canvasRef} style={{ display: 'none' }} />
+
                 {/* Main Timer Display */}
                 <div className="timer-container">
                     <div className="session-header">
@@ -404,9 +557,43 @@ function StudySession({ onBack }) {
                         </button>
                     </div>
 
-                    {/* Notification Area (for ML messages later) */}
+                    {/* AI Analysis Display */}
+                    <div className="analysis-display">
+                        <div className="analysis-item">
+                            <span className="analysis-label">Emotion:</span>
+                            <span className="analysis-value">{analysisData.emotion}</span>
+                        </div>
+                        <div className="analysis-item">
+                            <span className="analysis-label">Posture:</span>
+                            <span className="analysis-value">{analysisData.posture}</span>
+                        </div>
+                        <div className="analysis-item">
+                            <span className="analysis-label">Focus:</span>
+                            <span className="analysis-value">
+                                {Math.round((1 - analysisData.distraction_level) * 100)}%
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Notification Area */}
                     <div className="notification-area">
-                        <p className="notification-placeholder">Focus tracking active...</p>
+                        {currentSuggestion ? (
+                            <div className="notification-active">
+                                <p className="notification-message">{currentSuggestion}</p>
+                                <div className="notification-actions">
+                                    <button className="help-btn" onClick={handleRequestHelp}>
+                                        Get Help
+                                    </button>
+                                    <button className="dismiss-btn" onClick={handleDismissSuggestion}>
+                                        Dismiss
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="notification-placeholder">
+                                Focus tracking active... {cameraActive ? '🟢' : '🔴'}
+                            </p>
+                        )}
                     </div>
                 </div>
 
