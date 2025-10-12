@@ -1,0 +1,286 @@
+/**
+ * ==============================================================
+ * Global Resets
+ * ==============================================================
+ * Resets default browser margins and paddings, applies consistent
+ * box-sizing across all elements.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/**
+ * ==============================================================
+ * Base Layout
+ * ==============================================================
+ * Ensures full-viewport coverage for the app container.
+ */
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/**
+ * ==============================================================
+ * App Container
+ * ==============================================================
+ * Centers all content and holds the background layers.
+ */
+.app {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/**
+ * ==============================================================
+ * Background Video Layer
+ * ==============================================================
+ * Fixed full-screen looping video with slight blur and dimming.
+ */
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    filter: blur(5px) brightness(0.9);
+}
+
+/**
+ * ==============================================================
+ * Overlay Layer
+ * ==============================================================
+ * Adds a subtle dark-blue tint over the video to improve contrast.
+ */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 20, 60, 0.4); /* Deep bluish transparent overlay */
+    z-index: -2;
+}
+
+/**
+ * ==============================================================
+ * Hero Card
+ * ==============================================================
+ * The main content card with glassmorphic style and soft shadows.
+ * Includes tilt effect controlled via JavaScript.
+ */
+.hero-card {
+    background: rgba(200, 225, 255, 0.6);
+    backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    padding: 60px 70px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 550px;
+    width: 100%;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/**
+ * ==============================================================
+ * Main Content Wrapper
+ * ==============================================================
+ * Centers the hero card both horizontally and vertically.
+ */
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+/**
+ * ==============================================================
+ * Fade-In Animation
+ * ==============================================================
+ * Smoothly fades and slides elements upward on load.
+ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/**
+ * ==============================================================
+ * Icon Circle
+ * ==============================================================
+ * Circular logo background with soft blue glow.
+ */
+.icon-circle {
+    width: 120px;
+    height: 120px;
+    background: rgba(220, 234, 243);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    box-shadow: 0 10px 30px rgba(41, 141, 255, 0.3);
+    overflow: hidden;
+}
+
+/**
+ * ==============================================================
+ * Logo Image
+ * ==============================================================
+ * Scales logo proportionally within the icon circle.
+ */
+.logo-img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+/**
+ * ==============================================================
+ * Typography
+ * ==============================================================
+ * Headings, tagline, and descriptive text styling.
+ */
+h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.tagline {
+    font-size: 18px;
+    color: #5B7BA6;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.description {
+    font-size: 16px;
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 35px;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/**
+ * ==============================================================
+ * CTA Button
+ * ==============================================================
+ * Rounded gradient button with elevation effects.
+ */
+.cta-button {
+    background: linear-gradient(135deg, #5B7BA6 0%, #2C3E50 100%);
+    color: white;
+    padding: 16px 50px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(91, 123, 166, 0.3);
+    margin-bottom: 40px;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(91, 123, 166, 0.4);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+/**
+ * ==============================================================
+ * Clerk User Menu
+ * ==============================================================
+ * Positions the user profile button in the top-right corner.
+ */
+.user-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/**
+ * ==============================================================
+ * Welcome Text
+ * ==============================================================
+ * Styles for the welcome message when user is signed in.
+ */
+.welcome-text {
+    font-size: 18px;
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/**
+ * ==============================================================
+ * Clerk Custom Styling
+ * ==============================================================
+ * Override Clerk's default fonts to match FocusMate branding.
+ */
+.cl-rootBox,
+.cl-card,
+.cl-formButtonPrimary,
+.cl-footerActionLink,
+.cl-socialButtonsBlockButton,
+.cl-formFieldLabel,
+.cl-formFieldInput,
+.cl-identityPreviewText,
+.cl-headerTitle,
+.cl-headerSubtitle,
+.cl-dividerText,
+.cl-internal-b3fm6y {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/**
+ * ==============================================================
+ * Responsive Styles
+ * ==============================================================
+ * Adjusts padding and font sizes for smaller screens.
+ */
+@media (max-width: 768px) {
+    .hero-card {
+        padding: 40px 30px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .features-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
