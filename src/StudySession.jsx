@@ -115,7 +115,8 @@ function StudySession({ onBack }) {
                     study_mode: sessionConfig.studyMode,
                     difficulty: sessionConfig.difficulty,
                     break_preference: sessionConfig.breakPreference,
-                    distraction_sensitivity: sessionConfig.distractionSensitivity
+                    distraction_sensitivity: sessionConfig.distractionSensitivity,
+                    music_choice: selectedMusic
                 })
             });
 
@@ -129,8 +130,38 @@ function StudySession({ onBack }) {
         }
     };
 
+    // Log pause event to backend
+    const logPause = async () => {
+        if (sessionId) {
+            try {
+                await fetch('http://localhost:5000/api/session/pause', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                });
+            } catch (error) {
+                console.error('Error logging pause:', error);
+            }
+        }
+    };
+
+    // Log resume event to backend
+    const logResume = async () => {
+        if (sessionId) {
+            try {
+                await fetch('http://localhost:5000/api/session/resume', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId })
+                });
+            } catch (error) {
+                console.error('Error logging resume:', error);
+            }
+        }
+    };
+
     // End session on backend
-    const endBackendSession = async () => {
+    const endBackendSession = async (completed = false) => {
         if (sessionId) {
             try {
                 const response = await fetch('http://localhost:5000/api/session/end', {
@@ -139,7 +170,8 @@ function StudySession({ onBack }) {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        session_id: sessionId
+                        session_id: sessionId,
+                        completed: completed  // Add this
                     })
                 });
 
@@ -197,7 +229,9 @@ function StudySession({ onBack }) {
 
     // Timer countdown effect
     useEffect(() => {
-        if (currentStep === 'session' && timeRemaining !== null && !isPaused) {
+        if (currentStep === 'session' && timeRemaining !== null && timeRemaining > 0 && !isPaused) {
+            console.log('⏱️ Timer started, time remaining:', timeRemaining);
+
             timerIntervalRef.current = setInterval(() => {
                 setTimeRemaining(prev => {
                     if (prev <= 1) {
@@ -209,32 +243,47 @@ function StudySession({ onBack }) {
                 });
             }, 1000);
 
-            return () => clearInterval(timerIntervalRef.current);
+            return () => {
+                if (timerIntervalRef.current) {
+                    clearInterval(timerIntervalRef.current);
+                }
+            };
         }
     }, [currentStep, timeRemaining, isPaused]);
 
-    // Start camera and frame processing when session starts
+    // Start camera and backend session when session starts
     useEffect(() => {
         if (currentStep === 'session') {
+            console.log('📸 Starting camera and backend session...');
             startCamera();
             startBackendSession();
-
-            // Send frame every 3 seconds for analysis
-            frameIntervalRef.current = setInterval(() => {
-                sendFrameToBackend();
-            }, 3000);
         }
 
         return () => {
             stopCamera();
-            if (timerIntervalRef.current) {
-                clearInterval(timerIntervalRef.current);
-            }
-            if (frameIntervalRef.current) {
-                clearInterval(frameIntervalRef.current);
-            }
         };
-    }, [currentStep, sessionId]);
+    }, [currentStep]);
+
+    // Start frame processing when sessionId and camera are ready
+    useEffect(() => {
+        if (currentStep === 'session' && sessionId && cameraActive) {
+            console.log('🎥 Starting frame analysis with session:', sessionId);
+
+            // Wait 2 seconds before starting to send frames
+            const timeoutId = setTimeout(() => {
+                frameIntervalRef.current = setInterval(() => {
+                    sendFrameToBackend();
+                }, 3000);
+            }, 2000);
+
+            return () => {
+                clearTimeout(timeoutId);
+                if (frameIntervalRef.current) {
+                    clearInterval(frameIntervalRef.current);
+                }
+            };
+        }
+    }, [sessionId, cameraActive, currentStep]);
 
     const handleInputChange = (field, value) => {
         setSessionConfig(prev => ({
@@ -261,24 +310,32 @@ function StudySession({ onBack }) {
     };
 
     const handlePauseToggle = () => {
+        if (isPaused) {
+            logResume();
+        } else {
+            logPause();
+        }
         setIsPaused(!isPaused);
     };
 
     const handleEndSession = async () => {
         if (confirm('Are you sure you want to end this session?')) {
             stopCamera();
-            clearInterval(timerIntervalRef.current);
-            clearInterval(frameIntervalRef.current);
-            await endBackendSession();
+            if (frameIntervalRef.current) clearInterval(frameIntervalRef.current);
+            if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+            await endBackendSession(false);  // Not completed
             if (onBack) onBack();
         }
     };
 
-    const handleSessionComplete = async () => {
+    const handleSessionComplete = () => {
         stopCamera();
-        clearInterval(frameIntervalRef.current);
-        await endBackendSession();
-        alert('Session complete! Great work! 🎉');
+        if (frameIntervalRef.current) clearInterval(frameIntervalRef.current);
+        if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+
+        endBackendSession(true);  // Completed!
+
+        alert('Session complete! Great work!');
         if (onBack) onBack();
     };
 
@@ -286,9 +343,15 @@ function StudySession({ onBack }) {
         setCurrentSuggestion(null);
     };
 
-    const handleRequestHelp = () => {
+    const handleRequestHelp = async () => {
+        if (!isPaused) {
+            setIsPaused(true);
+            await logPause();
+        }
+
         socket.emit('request_help', { session_id: sessionId });
-        alert('AI Assistant feature coming soon!');
+
+        alert('Pausing session... My Notes tab coming soon!');
     };
 
     // Setup Form Screen
