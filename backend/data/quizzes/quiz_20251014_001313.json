@@ -1,0 +1,74 @@
+{
+  "quiz_id": "quiz_20251014_001313",
+  "user_id": "user123",
+  "topic": "Derivatives",
+  "quiz_type": "True/False",
+  "difficulty": "hard",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "If `lim_{h->0} (f(c+h) - f(c-h))/(2h)` exists for a function `f(x)` at `x=c`, then `f(x)` must be differentiable at `x=c`.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The existence of the symmetric derivative (the given limit) does not guarantee differentiability. For example, `f(x) = |x|` at `x=0` has a symmetric derivative of 0, but is not differentiable at `x=0`."
+    },
+    {
+      "question": "If `f(x)` is a differentiable and one-to-one function, then its inverse function `f\u207b\u00b9(y)` is guaranteed to be differentiable at every point `y` in its domain where `f\u207b\u00b9(y)` exists.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The inverse function `f\u207b\u00b9(y)` is differentiable at `y_0 = f(x_0)` only if `f'(x_0) \u2260 0`. If `f'(x_0) = 0`, `f\u207b\u00b9(y)` might not be differentiable at `y_0`. For instance, if `f(x) = x\u00b3`, then `f'(0) = 0`. Its inverse `f\u207b\u00b9(y) = y^(1/3)` is not differentiable at `y=0`."
+    },
+    {
+      "question": "If `lim_{x->a} f(x)/g(x)` is an indeterminate form of `\u221e/\u221e`, and `lim_{x->a} f'(x)/g'(x)` does not exist, then `lim_{x->a} f(x)/g(x)` also cannot exist.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "This is a common misinterpretation of L'Hopital's Rule. The rule states that *if* `lim f'(x)/g'(x)` exists, then `lim f(x)/g(x)` exists and equals it. It does *not* state the converse. For example, `lim_{x->\u221e} (x + sin x)/x` is an `\u221e/\u221e` form, and its limit is 1. However, `lim_{x->\u221e} (d/dx(x + sin x))/(d/dx(x)) = lim_{x->\u221e} (1 + cos x)/1` does not exist."
+    },
+    {
+      "question": "If `f(x)` is differentiable on `R` and `g(x)` is continuous on `R`, then the composite function `h(x) = f(g(x))` is necessarily differentiable on `R`.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "For `h(x) = f(g(x))` to be differentiable, `g(x)` must also be differentiable at `x`, and `f(x)` must be differentiable at `g(x)`. If `g(x)` is only continuous but not differentiable (e.g., `g(x) = |x|`), then `h(x)` might not be differentiable (e.g., if `f(x) = x`, then `h(x) = |x|`, which is not differentiable at `x=0`)."
+    },
+    {
+      "question": "Given the relation `y\u00b2 = x`, the second derivative `d\u00b2y/dx\u00b2` is equal to `1/(4y\u00b3)`.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Differentiating `y\u00b2 = x` implicitly with respect to `x` gives `2y (dy/dx) = 1`, so `dy/dx = 1/(2y)`. Differentiating `dy/dx` again with respect to `x` gives `d\u00b2y/dx\u00b2 = d/dx (1/(2y)) = -1/(2y\u00b2) * (dy/dx)` using the chain rule. Substituting `dy/dx = 1/(2y)`, we get `d\u00b2y/dx\u00b2 = -1/(2y\u00b2) * (1/(2y)) = -1/(4y\u00b3)`."
+    }
+  ],
+  "created_at": "2025-10-14T00:13:13.502264",
+  "results": [
+    {
+      "quiz_id": "quiz_20251014_001313",
+      "user_answers": {
+        "0": "True",
+        "1": "False",
+        "2": "True",
+        "3": "False",
+        "4": "False"
+      },
+      "score": 3,
+      "time_taken": 0,
+      "completed_at": "2025-10-14T00:13:25.039020",
+      "total_questions": 5,
+      "percentage": 60.0
+    }
+  ]
+}

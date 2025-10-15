@@ -1,0 +1,74 @@
+{
+  "quiz_id": "quiz_20251013_164208",
+  "user_id": "user123",
+  "topic": "calculus",
+  "quiz_type": "True/False",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": 5,
+  "questions": [
+    {
+      "question": "The derivative of a constant function is always zero.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "For any constant c, the rate of change is zero, so d/dx(c) = 0."
+    },
+    {
+      "question": "The power rule for differentiation states that d/dx(x^n) = nx^(n-1).",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "This is the fundamental power rule used to differentiate functions of the form x raised to a power."
+    },
+    {
+      "question": "The indefinite integral of 2x with respect to x is x^2 + C.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Using the power rule for integration, \u222bx^n dx = (x^(n+1))/(n+1) + C. So, \u222b2x dx = 2 * (x^(1+1))/(1+1) + C = 2 * (x^2)/2 + C = x^2 + C."
+    },
+    {
+      "question": "If a function is differentiable at a point, it must also be continuous at that point.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Differentiability implies continuity. A function cannot have a derivative at a point where it is discontinuous (e.g., a jump, hole, or vertical asymptote)."
+    },
+    {
+      "question": "Integration is the mathematical process of finding the instantaneous rate of change of a function.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Finding the instantaneous rate of change is the process of differentiation. Integration is the process of finding the accumulation or the antiderivative of a function."
+    }
+  ],
+  "created_at": "2025-10-13T16:42:08.461044",
+  "results": [
+    {
+      "quiz_id": "quiz_20251013_164208",
+      "user_answers": {
+        "0": "True",
+        "1": "True",
+        "2": "True",
+        "3": "False",
+        "4": "True"
+      },
+      "score": 3,
+      "time_taken": 22,
+      "completed_at": "2025-10-13T16:42:31.479176",
+      "total_questions": 5,
+      "percentage": 60.0
+    }
+  ]
+}

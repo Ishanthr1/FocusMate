@@ -1,0 +1,65 @@
+{
+  "session_id": "session_20251014_132706",
+  "user_id": "user123",
+  "start_time": "2025-10-14T13:27:06.704486",
+  "end_time": "2025-10-14T13:27:34.091516",
+  "duration_planned": 25,
+  "duration_actual": 0.46,
+  "subject": "mathematics",
+  "study_mode": "reading",
+  "difficulty": "medium",
+  "break_preference": "yes",
+  "distraction_sensitivity": "medium",
+  "music_choice": "none",
+  "pauses": [
+    {
+      "timestamp": "2025-10-14T13:27:34.081937",
+      "action": "paused"
+    }
+  ],
+  "breaks": [],
+  "events": [
+    {
+      "type": "detection",
+      "timestamp": "2025-10-14T13:27:14.346946",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-14T13:27:20.974845",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-14T13:27:29.954247",
+      "emotion": "angry",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-14T13:27:32.983224",
+      "emotion": "angry",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "help_requested",
+      "timestamp": "2025-10-14T13:27:34.084399"
+    }
+  ],
+  "emotions_detected": {
+    "neutral": 2,
+    "angry": 2
+  },
+  "posture_warnings": 0,
+  "distraction_warnings": 0,
+  "help_requests": 1,
+  "total_paused_time": 0,
+  "focus_score": 100,
+  "completed": false
+}

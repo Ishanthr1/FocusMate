@@ -82,11 +82,11 @@ function Analytics() {
                 case 'today':
                     return sessionDate.toDateString() === now.toDateString();
                 case 'week':
-                    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                    return sessionDate >= weekAgo;
+                    { const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    return sessionDate >= weekAgo; }
                 case 'month':
-                    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                    return sessionDate >= monthAgo;
+                    { const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    return sessionDate >= monthAgo; }
                 default:
                     return true;
             }
@@ -193,10 +193,9 @@ function Analytics() {
                 </div>
             </div>
 
-            {/* Statistics Cards */}
             <div className="stats-grid-compact">
                 <div className="stat-card-compact">
-                    <div className="stat-icon-small">📚</div>
+                    <div className="stat-icon-small"></div>
                     <div className="stat-info">
                         <div className="stat-value-small">{stats.totalSessions}</div>
                         <div className="stat-label-small">Sessions</div>
@@ -204,7 +203,7 @@ function Analytics() {
                 </div>
 
                 <div className="stat-card-compact">
-                    <div className="stat-icon-small">⏱️</div>
+                    <div className="stat-icon-small"></div>
                     <div className="stat-info">
                         <div className="stat-value-small">{formatDuration(stats.totalStudyTime)}</div>
                         <div className="stat-label-small">Study Time</div>
@@ -212,7 +211,7 @@ function Analytics() {
                 </div>
 
                 <div className="stat-card-compact">
-                    <div className="stat-icon-small">🎯</div>
+                    <div className="stat-icon-small"></div>
                     <div className="stat-info">
                         <div className="stat-value-small">{stats.averageFocusScore}%</div>
                         <div className="stat-label-small">Avg Focus</div>
@@ -220,7 +219,7 @@ function Analytics() {
                 </div>
 
                 <div className="stat-card-compact">
-                    <div className="stat-icon-small">📖</div>
+                    <div className="stat-icon-small"></div>
                     <div className="stat-info">
                         <div className="stat-value-small">{stats.mostStudiedSubject || 'N/A'}</div>
                         <div className="stat-label-small">Top Subject</div>
@@ -228,7 +227,6 @@ function Analytics() {
                 </div>
             </div>
 
-            {/* Download Combined Reports */}
             <div className="download-section-compact">
                 <h3>Download Reports</h3>
                 <div className="download-buttons-compact">
@@ -253,7 +251,6 @@ function Analytics() {
                 </div>
             </div>
 
-            {/* Sessions List */}
             <div className="sessions-section-compact">
                 <h3>Recent Sessions ({filteredSessions.length})</h3>
 

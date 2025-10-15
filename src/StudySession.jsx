@@ -2,11 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import './StudySession.css';
 
-// Connect to Flask backend
 const socket = io('http://localhost:5000');
 
-function StudySession({ onBack }) {
-    const [currentStep, setCurrentStep] = useState('setup'); // 'setup', 'music', 'session'
+function StudySession({ onBack, onNavigateToNotes }) {
+    const [currentStep, setCurrentStep] = useState('setup');
     const [sessionConfig, setSessionConfig] = useState({
         duration: 25,
         subject: '',
@@ -33,20 +32,17 @@ function StudySession({ onBack }) {
     const timerIntervalRef = useRef(null);
     const frameIntervalRef = useRef(null);
 
-    // Format time as MM:SS
     const formatTime = (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // Calculate progress percentage
     const getProgress = () => {
         const totalSeconds = sessionConfig.duration * 60;
         return ((totalSeconds - timeRemaining) / totalSeconds) * 100;
     };
 
-    // Start webcam
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -66,7 +62,6 @@ function StudySession({ onBack }) {
         }
     };
 
-    // Stop webcam
     const stopCamera = () => {
         if (streamRef.current) {
             streamRef.current.getTracks().forEach(track => track.stop());
@@ -74,24 +69,23 @@ function StudySession({ onBack }) {
         }
     };
 
-    // Send frame to backend for analysis
     const sendFrameToBackend = () => {
         if (videoRef.current && canvasRef.current && sessionId) {
             const canvas = canvasRef.current;
             const video = videoRef.current;
 
-            // Set canvas size to match video
+            if (video.videoWidth === 0 || video.videoHeight === 0) {
+                return;
+            }
+
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
-            // Draw current video frame to canvas
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Convert canvas to base64 image
             const frameData = canvas.toDataURL('image/jpeg', 0.8);
 
-            // Send to backend via Socket.IO
             socket.emit('video_frame', {
                 session_id: sessionId,
                 frame: frameData,
@@ -100,7 +94,6 @@ function StudySession({ onBack }) {
         }
     };
 
-    // Start session on backend
     const startBackendSession = async () => {
         try {
             const response = await fetch('http://localhost:5000/api/session/start', {
@@ -109,7 +102,7 @@ function StudySession({ onBack }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user_id: 'user123', // TODO: Get from Clerk
+                    user_id: 'user123',
                     duration: sessionConfig.duration,
                     subject: sessionConfig.subject,
                     study_mode: sessionConfig.studyMode,
@@ -123,14 +116,12 @@ function StudySession({ onBack }) {
             const data = await response.json();
             if (data.success) {
                 setSessionId(data.session_id);
-                console.log('✅ Backend session started:', data.session_id);
             }
         } catch (error) {
             console.error('Error starting backend session:', error);
         }
     };
 
-    // Log pause event to backend
     const logPause = async () => {
         if (sessionId) {
             try {
@@ -145,7 +136,6 @@ function StudySession({ onBack }) {
         }
     };
 
-    // Log resume event to backend
     const logResume = async () => {
         if (sessionId) {
             try {
@@ -160,7 +150,6 @@ function StudySession({ onBack }) {
         }
     };
 
-    // End session on backend
     const endBackendSession = async (completed = false) => {
         if (sessionId) {
             try {
@@ -171,44 +160,32 @@ function StudySession({ onBack }) {
                     },
                     body: JSON.stringify({
                         session_id: sessionId,
-                        completed: completed  // Add this
+                        completed: completed
                     })
                 });
 
                 const data = await response.json();
-                console.log('💾 Backend session ended:', data);
             } catch (error) {
                 console.error('Error ending backend session:', error);
             }
         }
     };
 
-    // Listen for Socket.IO events
     useEffect(() => {
-        // Connection events
-        socket.on('connect', () => {
-            console.log('🔗 Connected to backend');
-        });
+        socket.on('connect', () => {});
 
-        socket.on('connection_response', (data) => {
-            console.log('Backend response:', data);
-        });
+        socket.on('connection_response', (data) => {});
 
-        // Analysis results from ML
         socket.on('analysis_result', (data) => {
-            console.log('📊 Analysis result:', data);
-
             setAnalysisData({
                 emotion: data.emotion || 'neutral',
                 posture: data.posture || 'unknown',
                 distraction_level: data.distraction_level || 0
             });
 
-            // Show suggestion if provided
             if (data.suggestion) {
                 setCurrentSuggestion(data.suggestion);
 
-                // Auto-hide suggestion after 10 seconds
                 setTimeout(() => {
                     setCurrentSuggestion(null);
                 }, 10000);
@@ -216,22 +193,22 @@ function StudySession({ onBack }) {
         });
 
         socket.on('analysis_error', (data) => {
-            console.error('❌ Analysis error:', data.error);
+            console.error('Analysis error:', data.error);
         });
+
+        socket.on('disconnect', () => {});
 
         return () => {
             socket.off('connect');
             socket.off('connection_response');
             socket.off('analysis_result');
             socket.off('analysis_error');
+            socket.off('disconnect');
         };
     }, []);
 
-    // Timer countdown effect
     useEffect(() => {
         if (currentStep === 'session' && timeRemaining !== null && timeRemaining > 0 && !isPaused) {
-            console.log('⏱️ Timer started, time remaining:', timeRemaining);
-
             timerIntervalRef.current = setInterval(() => {
                 setTimeRemaining(prev => {
                     if (prev <= 1) {
@@ -251,10 +228,8 @@ function StudySession({ onBack }) {
         }
     }, [currentStep, timeRemaining, isPaused]);
 
-    // Start camera and backend session when session starts
     useEffect(() => {
         if (currentStep === 'session') {
-            console.log('📸 Starting camera and backend session...');
             startCamera();
             startBackendSession();
         }
@@ -264,12 +239,8 @@ function StudySession({ onBack }) {
         };
     }, [currentStep]);
 
-    // Start frame processing when sessionId and camera are ready
     useEffect(() => {
         if (currentStep === 'session' && sessionId && cameraActive) {
-            console.log('🎥 Starting frame analysis with session:', sessionId);
-
-            // Wait 2 seconds before starting to send frames
             const timeoutId = setTimeout(() => {
                 frameIntervalRef.current = setInterval(() => {
                     sendFrameToBackend();
@@ -323,7 +294,7 @@ function StudySession({ onBack }) {
             stopCamera();
             if (frameIntervalRef.current) clearInterval(frameIntervalRef.current);
             if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-            await endBackendSession(false);  // Not completed
+            await endBackendSession(false);
             if (onBack) onBack();
         }
     };
@@ -333,7 +304,7 @@ function StudySession({ onBack }) {
         if (frameIntervalRef.current) clearInterval(frameIntervalRef.current);
         if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
 
-        endBackendSession(true);  // Completed!
+        endBackendSession(true);
 
         alert('Session complete! Great work!');
         if (onBack) onBack();
@@ -351,10 +322,17 @@ function StudySession({ onBack }) {
 
         socket.emit('request_help', { session_id: sessionId });
 
-        alert('Pausing session... My Notes tab coming soon!');
+        stopCamera();
+        if (frameIntervalRef.current) clearInterval(frameIntervalRef.current);
+        if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+
+        await endBackendSession(false);
+
+        if (onNavigateToNotes) {
+            onNavigateToNotes();
+        }
     };
 
-    // Setup Form Screen
     if (currentStep === 'setup') {
         return (
             <div className="study-session">
@@ -363,7 +341,6 @@ function StudySession({ onBack }) {
                     <p className="form-subtitle">Let's set up your perfect study environment</p>
 
                     <form className="session-form">
-                        {/* Duration */}
                         <div className="form-group">
                             <label className="form-label">
                                 Study Duration <span className="required">*</span>
@@ -382,7 +359,6 @@ function StudySession({ onBack }) {
                             </div>
                         </div>
 
-                        {/* Subject */}
                         <div className="form-group">
                             <label className="form-label">
                                 What are you studying? <span className="required">*</span>
@@ -404,17 +380,16 @@ function StudySession({ onBack }) {
                             </select>
                         </div>
 
-                        {/* Study Mode */}
                         <div className="form-group">
                             <label className="form-label">
                                 Study Mode <span className="required">*</span>
                             </label>
                             <div className="mode-grid">
                                 {[
-                                    { value: 'reading', label: 'Reading', emoji: '📖' },
-                                    { value: 'practice', label: 'Practice Problems', emoji: '✍️' },
-                                    { value: 'review', label: 'Review', emoji: '🔄' },
-                                    { value: 'writing', label: 'Writing/Essays', emoji: '📝' }
+                                    { value: 'reading', label: 'Reading' },
+                                    { value: 'practice', label: 'Practice Problems' },
+                                    { value: 'review', label: 'Review' },
+                                    { value: 'writing', label: 'Writing/Essays' }
                                 ].map(mode => (
                                     <button
                                         key={mode.value}
@@ -422,14 +397,12 @@ function StudySession({ onBack }) {
                                         className={`mode-card ${sessionConfig.studyMode === mode.value ? 'active' : ''}`}
                                         onClick={() => handleInputChange('studyMode', mode.value)}
                                     >
-                                        <span className="mode-emoji">{mode.emoji}</span>
                                         <span className="mode-label">{mode.label}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Difficulty Level */}
                         <div className="form-group">
                             <label className="form-label">Difficulty Level</label>
                             <div className="difficulty-selector">
@@ -446,7 +419,6 @@ function StudySession({ onBack }) {
                             </div>
                         </div>
 
-                        {/* Break Preference */}
                         <div className="form-group">
                             <label className="form-label">Enable Pomodoro Breaks?</label>
                             <div className="toggle-group">
@@ -467,7 +439,6 @@ function StudySession({ onBack }) {
                             </div>
                         </div>
 
-                        {/* Distraction Sensitivity */}
                         <div className="form-group">
                             <label className="form-label">Distraction Sensitivity</label>
                             <div className="sensitivity-slider">
@@ -497,15 +468,14 @@ function StudySession({ onBack }) {
         );
     }
 
-    // Music Selection Screen
     if (currentStep === 'music') {
         const musicOptions = [
-            { id: 'lofi', name: 'Lo-fi Beats', preview: '🎵' },
-            { id: 'classical', name: 'Classical Music', preview: '🎼' },
-            { id: 'ambient', name: 'Ambient Sounds', preview: '🌊' },
-            { id: 'nature', name: 'Nature Sounds', preview: '🌲' },
-            { id: 'whitenoise', name: 'White Noise', preview: '📻' },
-            { id: 'piano', name: 'Piano Instrumental', preview: '🎹' }
+            { id: 'lofi', name: 'Lo-fi Beats' },
+            { id: 'classical', name: 'Classical Music' },
+            { id: 'ambient', name: 'Ambient Sounds' },
+            { id: 'nature', name: 'Nature Sounds' },
+            { id: 'whitenoise', name: 'White Noise' },
+            { id: 'piano', name: 'Piano Instrumental' }
         ];
 
         return (
@@ -521,7 +491,6 @@ function StudySession({ onBack }) {
                                 className={`music-card ${selectedMusic === music.id ? 'active' : ''}`}
                                 onClick={() => handleMusicSelection(music.id)}
                             >
-                                <span className="music-preview">{music.preview}</span>
                                 <span className="music-name">{music.name}</span>
                             </button>
                         ))}
@@ -554,14 +523,11 @@ function StudySession({ onBack }) {
         );
     }
 
-    // Active Session Screen (Timer + Camera)
     if (currentStep === 'session') {
         return (
             <div className="active-session-screen">
-                {/* Hidden canvas for frame capture */}
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-                {/* Main Timer Display */}
                 <div className="timer-container">
                     <div className="session-header">
                         <div className="session-info">
@@ -620,7 +586,6 @@ function StudySession({ onBack }) {
                         </button>
                     </div>
 
-                    {/* AI Analysis Display */}
                     <div className="analysis-display">
                         <div className="analysis-item">
                             <span className="analysis-label">Emotion:</span>
@@ -638,7 +603,6 @@ function StudySession({ onBack }) {
                         </div>
                     </div>
 
-                    {/* Notification Area */}
                     <div className="notification-area">
                         {currentSuggestion ? (
                             <div className="notification-active">
@@ -654,17 +618,16 @@ function StudySession({ onBack }) {
                             </div>
                         ) : (
                             <p className="notification-placeholder">
-                                Focus tracking active... {cameraActive ? '🟢' : '🔴'}
+                                Focus tracking active... {cameraActive ? '' : ''}
                             </p>
                         )}
                     </div>
                 </div>
 
-                {/* Webcam Feed */}
                 <div className="camera-feed">
                     <div className="camera-header">
                         <span className="camera-status">
-                            {cameraActive ? '🔴 Recording' : '⚪ Camera Off'}
+                            {cameraActive ? 'Recording' : 'Camera Off'}
                         </span>
                     </div>
                     <video

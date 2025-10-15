@@ -475,6 +475,214 @@
 
 /**
  * ==============================================================
+ * Markdown Rendering Styles
+ * ==============================================================
+ */
+
+/* Headers in markdown */
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4 {
+    margin: 16px 0 12px 0;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.message-content h1 {
+    font-size: 22px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+}
+
+.message-content h2 {
+    font-size: 20px;
+}
+
+.message-content h3 {
+    font-size: 18px;
+}
+
+.message-content h4 {
+    font-size: 16px;
+}
+
+/* Paragraphs */
+.message-content p {
+    margin: 10px 0;
+    line-height: 1.7;
+}
+
+/* Lists */
+.message-content ul,
+.message-content ol {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+.message-content li {
+    margin: 6px 0;
+    line-height: 1.6;
+}
+
+.message-content ul li {
+    list-style-type: disc;
+}
+
+.message-content ol li {
+    list-style-type: decimal;
+}
+
+/* Bold and italic */
+.message-content strong {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.message-content em {
+    font-style: italic;
+}
+
+/* Inline code */
+.inline-code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 13px;
+    color: #e53e3e;
+}
+
+.message.user .inline-code {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffd6d6;
+}
+
+/* Code blocks */
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    border: 1px solid #2d2d2d;
+}
+
+.code-block code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* Scrollbar for code blocks */
+.code-block::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-block::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+/* Blockquotes */
+.message-content blockquote {
+    border-left: 4px solid #5B7BA6;
+    padding-left: 16px;
+    margin: 12px 0;
+    color: #4a5568;
+    font-style: italic;
+}
+
+.message.user blockquote {
+    border-left-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Tables */
+.message-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+.message-content th,
+.message-content td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.message-content th {
+    background: #f7fafc;
+    font-weight: 600;
+}
+
+.message.user table th {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.message.user table th,
+.message.user table td {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Horizontal rules */
+.message-content hr {
+    border: none;
+    border-top: 2px solid #e2e8f0;
+    margin: 16px 0;
+}
+
+/* Links */
+.markdown-link {
+    color: #5B7BA6;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.markdown-link:hover {
+    color: #2C3E50;
+}
+
+.message.user .markdown-link {
+    color: #b3d9ff;
+}
+
+.message.user .markdown-link:hover {
+    color: white;
+}
+
+/* Math equations (KaTeX) */
+.message-content .katex {
+    font-size: 1.1em;
+}
+
+.message-content .katex-display {
+    margin: 16px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Better spacing for assistant messages */
+.message.assistant .message-content > *:first-child {
+    margin-top: 0;
+}
+
+.message.assistant .message-content > *:last-child {
+    margin-bottom: 0;
+}
+
+/**
+ * ==============================================================
  * Responsive Design
  * ==============================================================
  */

@@ -1,0 +1,144 @@
+{
+  "quiz_id": "quiz_20251013_163431",
+  "user_id": "user123",
+  "topic": "World War 2",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "hard",
+  "question_count": 10,
+  "time_limit": 5,
+  "questions": [
+    {
+      "question": "The secret protocols of the Molotov-Ribbentrop Pact of August 1939 divided spheres of influence in Eastern Europe. Which of the following regions was NOT explicitly designated as falling into the Soviet sphere of influence under these protocols?",
+      "options": [
+        "A) Finland",
+        "B) Latvia",
+        "C) Eastern Poland",
+        "D) Slovakia"
+      ],
+      "correct_answer": "D",
+      "explanation": "The secret protocols allocated Finland, Estonia, Latvia, Bessarabia, and eastern parts of Poland to the Soviet sphere, and western Poland and Lithuania to the German sphere (though Lithuania was later traded). Slovakia, then a German satellite, was not part of this specific division."
+    },
+    {
+      "question": "Operation Citadel, the German offensive at Kursk in July 1943, had a primary strategic objective to achieve which of the following?",
+      "options": [
+        "A) Encircle and destroy a major portion of the Soviet forces in the Kursk salient",
+        "B) Break through to the oilfields of the Caucasus",
+        "C) Divert Soviet forces from a planned Allied invasion of Italy",
+        "D) Secure a direct land bridge to Leningrad"
+      ],
+      "correct_answer": "A",
+      "explanation": "Operation Citadel was a pincer movement designed to cut off and annihilate the Soviet forces in the Kursk salient, attempting to regain the strategic initiative on the Eastern Front."
+    },
+    {
+      "question": "Which British acoustic detection system, a precursor to modern sonar, was crucial in the Battle of the Atlantic for locating submerged U-boats?",
+      "options": [
+        "A) Radar",
+        "B) Hydrophone",
+        "C) ASDIC",
+        "D) Huff-Duff"
+      ],
+      "correct_answer": "C",
+      "explanation": "ASDIC (Anti-Submarine Detection Investigation Committee) was the British code name for what became known as active sonar. It used sound waves to detect submerged objects, proving vital in the fight against German U-boats in the Atlantic."
+    },
+    {
+      "question": "Following the Japanese attack on Pearl Harbor, the first significant combined Allied ground, naval, and air offensive against Japanese forces in the Pacific was launched where?",
+      "options": [
+        "A) Midway",
+        "B) Coral Sea",
+        "C) Guadalcanal",
+        "D) New Guinea (Kokoda Track)"
+      ],
+      "correct_answer": "C",
+      "explanation": "While the Battle of Coral Sea (May 1942) and Midway (June 1942) were crucial naval battles, the Guadalcanal Campaign (August 1942 \u2013 February 1943) represented the first major Allied offensive in the Pacific, involving extensive ground forces in addition to naval and air power, marking the shift from defensive to offensive operations."
+    },
+    {
+      "question": "During the combined bomber offensive against Germany, the US Army Air Forces (USAAF) primarily advocated for a strategy of 'precision bombing' against which type of targets?",
+      "options": [
+        "A) Industrial areas and worker housing",
+        "B) Military installations and troop concentrations",
+        "C) Transportation networks and oil production facilities",
+        "D) German morale and civilian infrastructure"
+      ],
+      "correct_answer": "C",
+      "explanation": "The USAAF's doctrine emphasized high-altitude daylight precision bombing aimed at destroying Germany's capacity to wage war by targeting critical strategic resources like oil production facilities, transportation hubs, and aircraft factories, in contrast to the RAF's area bombing at night."
+    },
+    {
+      "question": "The 20 July Plot of 1944, an attempt to assassinate Adolf Hitler and stage a coup d'\u00e9tat, was codenamed which of the following?",
+      "options": [
+        "A) Operation Flash",
+        "B) Operation Valkyrie",
+        "C) Operation Foxley",
+        "D) Operation Wolfram"
+      ],
+      "correct_answer": "B",
+      "explanation": "The plot to assassinate Adolf Hitler and stage a coup d'\u00e9tat on July 20, 1944, was codenamed Operation Valkyrie. It was planned by a group of Wehrmacht officers, primarily led by Colonel Claus von Stauffenberg."
+    },
+    {
+      "question": "The protracted and bloody series of four battles fought by the Allies against the German Winter Line in Italy between January and May 1944, resulting in heavy casualties and the destruction of an ancient monastery, is known as the Battle of...?",
+      "options": [
+        "A) Anzio",
+        "B) Ortona",
+        "C) Monte Cassino",
+        "D) Salerno"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Battle of Monte Cassino involved four major Allied assaults against the German Gustav Line fortifications around the monastery of Monte Cassino. It was one of the most brutal and strategically important battles of the Italian Campaign."
+    },
+    {
+      "question": "Facing severe shortages of natural crude oil, Nazi Germany extensively used the Fischer-Tropsch and Bergius processes to produce which vital wartime resource?",
+      "options": [
+        "A) Synthetic rubber",
+        "B) Heavy water",
+        "C) Synthetic fuel",
+        "D) Aluminium"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Fischer-Tropsch and Bergius processes were crucial industrial methods used by Nazi Germany to synthesize liquid fuels (gasoline and diesel) from coal, mitigating the critical shortage of natural petroleum during the war."
+    },
+    {
+      "question": "When the Lend-Lease Act was first signed into law by President Roosevelt in March 1941, which of the following nations was the *primary* initial recipient of aid under its provisions?",
+      "options": [
+        "A) Soviet Union",
+        "B) China",
+        "C) United Kingdom",
+        "D) France"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Lend-Lease Act was primarily designed to aid the United Kingdom, which was then fighting Germany alone and desperately needed supplies but lacked the funds. Aid to the Soviet Union began later in 1941 after the German invasion."
+    },
+    {
+      "question": "The 1943 Cairo Conference, attended by Roosevelt, Churchill, and Chiang Kai-shek, issued a declaration outlining the Allied post-war intentions for Asia. Which key commitment was made regarding Japanese-held territories?",
+      "options": [
+        "A) Korea would be granted immediate independence",
+        "B) Taiwan and the Pescadores would be returned to China",
+        "C) Japan would retain control of all territories acquired before 1937",
+        "D) Manchuria would be placed under a joint Allied protectorate"
+      ],
+      "correct_answer": "B",
+      "explanation": "The Cairo Declaration explicitly stated that 'all the territories Japan has stolen from the Chinese, such as Formosa [Taiwan] and The Pescadores, shall be restored to the Republic of China.' It also declared that Korea would become free and independent."
+    }
+  ],
+  "created_at": "2025-10-13T16:34:31.134598",
+  "results": [
+    {
+      "quiz_id": "quiz_20251013_163431",
+      "user_answers": {
+        "0": "A",
+        "1": "D",
+        "2": "C",
+        "3": "A",
+        "4": "C",
+        "5": "A",
+        "6": "A",
+        "7": "A",
+        "8": "A",
+        "9": "D"
+      },
+      "score": 2,
+      "time_taken": 43,
+      "completed_at": "2025-10-13T16:35:14.416677",
+      "total_questions": 10,
+      "percentage": 20.0
+    }
+  ]
+}

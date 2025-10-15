@@ -1,0 +1,54 @@
+{
+  "quiz_id": "quiz_20251013_235812",
+  "user_id": "user123",
+  "topic": "numbers",
+  "quiz_type": "Short Answer",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "What number comes right after 7?",
+      "correct_answer": "8",
+      "explanation": "When counting upwards from 1, the number 8 directly follows the number 7."
+    },
+    {
+      "question": "Is the number 4 an even number or an odd number?",
+      "correct_answer": "Even",
+      "explanation": "An even number is any integer that can be divided by 2 without leaving a remainder. 4 divided by 2 is 2, with no remainder, making it an even number."
+    },
+    {
+      "question": "Which number is smaller: 10 or 3?",
+      "correct_answer": "3",
+      "explanation": "When comparing two numbers, the one that appears earlier on a standard number line (or is closer to zero if both are positive) is the smaller number. In this case, 3 is smaller than 10."
+    },
+    {
+      "question": "If you have 2 pencils and then get 3 more pencils, how many pencils do you have altogether?",
+      "correct_answer": "5",
+      "explanation": "To find the total, you add the two quantities together: 2 pencils + 3 pencils = 5 pencils."
+    },
+    {
+      "question": "What is the first positive whole number you usually say when you start counting?",
+      "correct_answer": "1",
+      "explanation": "Counting typically begins with the number one (1), which is the smallest positive whole number."
+    }
+  ],
+  "created_at": "2025-10-13T23:58:12.082608",
+  "results": [
+    {
+      "quiz_id": "quiz_20251013_235812",
+      "user_answers": {
+        "0": "8",
+        "1": "even",
+        "2": "3",
+        "3": "5",
+        "4": "0"
+      },
+      "score": 4,
+      "time_taken": 0,
+      "completed_at": "2025-10-13T23:58:52.795650",
+      "total_questions": 5,
+      "percentage": 80.0
+    }
+  ]
+}

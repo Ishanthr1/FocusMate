@@ -1,0 +1,73 @@
+{
+  "quiz_id": "quiz_20251013_220328",
+  "user_id": "user123",
+  "topic": "calculus",
+  "quiz_type": "True/False",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": 5,
+  "questions": [
+    {
+      "question": "The derivative of a function at a point represents the slope of the tangent line to the function's graph at that point.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "This is a fundamental geometric interpretation of the derivative."
+    },
+    {
+      "question": "The derivative of x^2 is 2x.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "According to the power rule for differentiation, d/dx (x^n) = nx^(n-1)."
+    },
+    {
+      "question": "An integral can be used to find the exact area under a curve.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Definite integrals are specifically used to calculate the area between a function's graph and the x-axis over a given interval."
+    },
+    {
+      "question": "The indefinite integral of 2x is x^2 + C.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Integrating 2x with respect to x gives x^2, and 'C' represents the constant of integration for indefinite integrals."
+    },
+    {
+      "question": "A limit describes the value a function approaches as the input approaches some value, regardless of whether the function is defined at that exact point.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "This is the core concept of a limit in calculus, focusing on the behavior of the function near a point."
+    }
+  ],
+  "created_at": "2025-10-13T22:03:28.328614",
+  "results": [
+    {
+      "quiz_id": "quiz_20251013_220328",
+      "user_answers": {
+        "0": "True",
+        "1": "True",
+        "2": "True",
+        "3": "True"
+      },
+      "score": 4,
+      "time_taken": 32,
+      "completed_at": "2025-10-13T22:04:01.230312",
+      "total_questions": 5,
+      "percentage": 80.0
+    }
+  ]
+}

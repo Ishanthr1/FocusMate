@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import {useState, useEffect, useRef} from 'react';
+import './AIAssistant.css';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import './AIAssistant.css';
 
 function AIAssistant() {
@@ -22,7 +28,7 @@ function AIAssistant() {
     }, [messages]);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        messagesEndRef.current?.scrollIntoView({behavior: 'smooth'});
     };
 
     const fetchUserChats = async () => {
@@ -42,8 +48,8 @@ function AIAssistant() {
         try {
             const response = await fetch('http://localhost:5000/api/chat/new', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: 'user123' })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: 'user123'})
             });
 
             const data = await response.json();
@@ -94,7 +100,6 @@ function AIAssistant() {
         const userMessage = inputMessage;
         const imageData = selectedImage;
 
-        // Add user message to UI immediately
         setMessages(prev => [...prev, {
             role: 'user',
             content: userMessage,
@@ -110,7 +115,7 @@ function AIAssistant() {
         try {
             const response = await fetch('http://localhost:5000/api/chat/message', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     chat_id: currentChatId,
                     message: userMessage,
@@ -127,7 +132,7 @@ function AIAssistant() {
                     timestamp: data.timestamp
                 }]);
 
-                fetchUserChats(); // Refresh chat list
+                fetchUserChats();
             } else {
                 alert('Error: ' + data.error);
             }
@@ -167,7 +172,6 @@ function AIAssistant() {
 
     return (
         <div className="ai-assistant-container">
-            {/* Chat Sidebar */}
             <div className="chat-sidebar">
                 <button className="new-chat-btn" onClick={createNewChat}>
                     + New Chat
@@ -202,19 +206,12 @@ function AIAssistant() {
                 </div>
             </div>
 
-            {/* Chat Area */}
             <div className="chat-main">
                 {!currentChatId ? (
                     <div className="chat-welcome">
                         <h2>Welcome to FocusMate AI Assistant!</h2>
-                        <p>I'm here to help you with your studies. Ask me anything about:</p>
-                        <ul>
-                            <li>📚 Understanding difficult concepts</li>
-                            <li>✏️ Solving homework problems</li>
-                            <li>📝 Writing and essay help</li>
-                            <li>🧪 Science and math questions</li>
-                            <li>📖 Study tips and strategies</li>
-                        </ul>
+                        <p>I'm here to help you with your studies. Ask me anything</p>
+
                         <button className="start-chat-btn" onClick={createNewChat}>
                             Start a New Chat
                         </button>
@@ -225,11 +222,39 @@ function AIAssistant() {
                             {messages.map((msg, index) => (
                                 <div key={index} className={`message ${msg.role}`}>
                                     <div className="message-content">
-                                        {msg.content}
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkMath]}
+                                            rehypePlugins={[rehypeKatex]}
+                                            components={{
+                                                code({node, inline, className, children, ...props}) {
+                                                    return inline ? (
+                                                        <code className="inline-code" {...props}>
+                                                            {children}
+                                                        </code>
+                                                    ) : (
+                                                        <pre className="code-block">
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            </pre>
+                                                    );
+                                                },
+                                                a({node, children, ...props}) {
+                                                    return (
+                                                        <a className="markdown-link" target="_blank"
+                                                           rel="noopener noreferrer" {...props}>
+                                                            {children}
+                                                        </a>
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            {msg.content}
+                                        </ReactMarkdown>
                                     </div>
                                     <span className="message-time">
-                                        {new Date(msg.timestamp).toLocaleTimeString()}
-                                    </span>
+            {new Date(msg.timestamp).toLocaleTimeString()}
+        </span>
                                 </div>
                             ))}
                             {loading && (
@@ -239,13 +264,13 @@ function AIAssistant() {
                                     </div>
                                 </div>
                             )}
-                            <div ref={messagesEndRef} />
+                            <div ref={messagesEndRef}/>
                         </div>
 
                         <div className="input-area">
                             {imagePreview && (
                                 <div className="image-preview-container">
-                                    <img src={imagePreview} alt="Preview" className="image-preview" />
+                                    <img src={imagePreview} alt="Preview" className="image-preview"/>
                                     <button
                                         className="remove-image-btn"
                                         onClick={() => {
@@ -264,14 +289,12 @@ function AIAssistant() {
                                     ref={fileInputRef}
                                     onChange={handleImageSelect}
                                     accept="image/*"
-                                    style={{ display: 'none' }}
+                                    style={{display: 'none'}}
                                 />
                                 <button
                                     className="attach-btn"
                                     onClick={() => fileInputRef.current?.click()}
-                                    title="Upload image"
                                 >
-                                    📎
                                 </button>
 
                                 <textarea

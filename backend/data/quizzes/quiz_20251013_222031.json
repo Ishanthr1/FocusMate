@@ -1,0 +1,84 @@
+{
+  "quiz_id": "quiz_20251013_222031",
+  "user_id": "user123",
+  "topic": "addition",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": 10,
+  "questions": [
+    {
+      "question": "What is 2 + 3?",
+      "options": [
+        "A) 4",
+        "B) 5",
+        "C) 6",
+        "D) 7"
+      ],
+      "correct_answer": "B",
+      "explanation": "Adding 2 and 3 together gives a total of 5."
+    },
+    {
+      "question": "What is 5 + 4?",
+      "options": [
+        "A) 8",
+        "B) 9",
+        "C) 10",
+        "D) 11"
+      ],
+      "correct_answer": "B",
+      "explanation": "When you add 5 and 4, the sum is 9."
+    },
+    {
+      "question": "What is 10 + 5?",
+      "options": [
+        "A) 14",
+        "B) 15",
+        "C) 16",
+        "D) 17"
+      ],
+      "correct_answer": "B",
+      "explanation": "Adding 10 to 5 results in 15."
+    },
+    {
+      "question": "What is 12 + 13?",
+      "options": [
+        "A) 23",
+        "B) 24",
+        "C) 25",
+        "D) 26"
+      ],
+      "correct_answer": "C",
+      "explanation": "To add 12 and 13, you can add the ones digits (2+3=5) and the tens digits (1+1=2) to get 25."
+    },
+    {
+      "question": "What is 7 + 2?",
+      "options": [
+        "A) 8",
+        "B) 9",
+        "C) 10",
+        "D) 11"
+      ],
+      "correct_answer": "B",
+      "explanation": "Counting up 2 from 7 gives you 9."
+    }
+  ],
+  "created_at": "2025-10-13T22:20:31.915508",
+  "results": [
+    {
+      "quiz_id": "quiz_20251013_222031",
+      "user_answers": {
+        "0": "B",
+        "1": "B",
+        "2": "B",
+        "3": "C",
+        "4": "B"
+      },
+      "score": 5,
+      "time_taken": 11,
+      "completed_at": "2025-10-13T22:20:43.117289",
+      "total_questions": 5,
+      "percentage": 100.0
+    }
+  ]
+}

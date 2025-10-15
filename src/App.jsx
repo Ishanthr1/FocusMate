@@ -62,7 +62,6 @@ function HomePage() {
         }
     }, []);
 
-    // If signed in, redirect to dashboard
     if (isSignedIn) {
         return <Navigate to="/dashboard" replace />;
     }

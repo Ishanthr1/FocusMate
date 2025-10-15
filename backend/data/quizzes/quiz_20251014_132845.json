@@ -1,0 +1,83 @@
+{
+  "quiz_id": "quiz_20251014_132845",
+  "user_id": "user123",
+  "topic": "addition",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "medium",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "What is the sum of 25 and 13?",
+      "options": [
+        "A) 37",
+        "B) 38",
+        "C) 39",
+        "D) 40"
+      ],
+      "correct_answer": "B",
+      "explanation": "To find the sum, add 25 and 13: 25 + 13 = 38."
+    },
+    {
+      "question": "Add 47 and 38.",
+      "options": [
+        "A) 75",
+        "B) 80",
+        "C) 85",
+        "D) 95"
+      ],
+      "correct_answer": "C",
+      "explanation": "When adding 47 and 38, first add the ones column (7 + 8 = 15). Write down 5 and carry over 1 to the tens column. Then add the tens column (4 + 3 + 1 (carried over) = 8). The total is 85."
+    },
+    {
+      "question": "Calculate 123 + 249.",
+      "options": [
+        "A) 362",
+        "B) 372",
+        "C) 361",
+        "D) 371"
+      ],
+      "correct_answer": "B",
+      "explanation": "Add the numbers column by column: 3 + 9 = 12 (write 2, carry 1). 2 + 4 + 1 (carried) = 7. 1 + 2 = 3. So, 123 + 249 = 372."
+    },
+    {
+      "question": "Sarah collected 35 seashells on Monday and 28 seashells on Tuesday. How many seashells did she collect in total?",
+      "options": [
+        "A) 53",
+        "B) 60",
+        "C) 63",
+        "D) 58"
+      ],
+      "correct_answer": "C",
+      "explanation": "To find the total number of seashells, you need to add the number of seashells collected on Monday and Tuesday: 35 + 28 = 63."
+    },
+    {
+      "question": "Which number completes the addition sentence: __ + 18 = 50?",
+      "options": [
+        "A) 22",
+        "B) 32",
+        "C) 42",
+        "D) 68"
+      ],
+      "correct_answer": "B",
+      "explanation": "To find the missing number, you can subtract 18 from 50: 50 - 18 = 32. So, 32 + 18 = 50."
+    }
+  ],
+  "created_at": "2025-10-14T13:28:45.854419",
+  "results": [
+    {
+      "quiz_id": "quiz_20251014_132845",
+      "user_answers": {
+        "0": "B",
+        "1": "C",
+        "2": "B",
+        "3": "C"
+      },
+      "score": 4,
+      "time_taken": 0,
+      "completed_at": "2025-10-14T13:29:00.348142",
+      "total_questions": 5,
+      "percentage": 80.0
+    }
+  ]
+}
