@@ -718,6 +718,34 @@
     border-color: #cbd5e0;
 }
 
+
+/**
+ * ==============================================================
+ * Music Controls
+ * ==============================================================
+ */
+.music-controls {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.music-playing-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+.music-note {
+    font-size: 13px;
+    color: #718096;
+    margin: 0;
+}
+
 /**
  * ==============================================================
  * Responsive Design for Active Session

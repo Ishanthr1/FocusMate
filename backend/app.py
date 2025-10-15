@@ -21,6 +21,21 @@ from routes.ai_assistant import (
     delete_chat,
     load_chat_from_file
 )
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from utils.friends_manager import (
+    save_friend_request,
+    load_all_friend_requests,
+    save_friendship,
+    load_all_friendships,
+    get_user_by_email
+)
+
+friend_requests = load_all_friend_requests()
+friendships = load_all_friendships()
+
+questionnaire_data = {}
 
 report_generator = ReportGenerator()
 load_dotenv()
@@ -58,14 +73,18 @@ def health_check():
         'vision_processor': 'active'
     }), 200
 
+
 @app.route('/api/session/start', methods=['POST'])
 def start_session():
     try:
         data = request.json
         session_id = f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+
         active_sessions[session_id] = {
             'session_id': session_id,
             'user_id': data.get('user_id'),
+            'user_email': data.get('user_email'),
+            'user_name': data.get('user_name'),
             'start_time': datetime.now().isoformat(),
             'end_time': None,
             'duration_planned': data.get('duration'),
@@ -87,17 +106,20 @@ def start_session():
             'focus_score': 0,
             'completed': False
         }
+
+        print(f"Session started: {session_id}")
+
         return jsonify({
             'success': True,
             'session_id': session_id,
             'message': 'Session started successfully'
         }), 201
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
-
 @app.route('/api/session/pause', methods=['POST'])
 def pause_session():
     try:
@@ -442,6 +464,312 @@ def upload_document_route():
         return jsonify({'success': True, 'text': text}), 200
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/profile/questionnaire', methods=['GET'])
+def get_questionnaire():
+    try:
+        user_id = request.args.get('user_id', 'user123')
+
+        file_path = f'data/profiles/{user_id}.json'
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+            return jsonify({
+                'success': True,
+                'completed': True,
+                'data': data
+            }), 200
+        else:
+            return jsonify({
+                'success': True,
+                'completed': False
+            }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/profile/questionnaire', methods=['POST'])
+def submit_questionnaire():
+    try:
+        data = request.json
+        user_id = data.get('user_id', 'user123')
+
+        profile_data = {
+            'learningStyle': data.get('learningStyle'),
+            'studyEnvironment': data.get('studyEnvironment'),
+            'preferredTime': data.get('preferredTime'),
+            'studyDuration': data.get('studyDuration'),
+            'mainGoal': data.get('mainGoal'),
+            'biggestChallenge': data.get('biggestChallenge')
+        }
+
+        os.makedirs('data/profiles', exist_ok=True)
+        with open(f'data/profiles/{user_id}.json', 'w') as f:
+            json.dump(profile_data, f, indent=2)
+
+        return jsonify({
+            'success': True,
+            'message': 'Questionnaire saved'
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/friends/request', methods=['POST'])
+def send_friend_request():
+    try:
+        data = request.json
+        from_user_id = data.get('from_user_id')
+        from_email = data.get('from_email')
+        from_name = data.get('from_name')
+        to_email = data.get('to_email')
+
+        request_id = f"req_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+
+        request_data = {
+            'id': request_id,
+            'from_user_id': from_user_id,
+            'from_email': from_email,
+            'from_name': from_name,
+            'to_email': to_email,
+            'status': 'pending',
+            'created_at': datetime.now().isoformat()
+        }
+
+        friend_requests[request_id] = request_data
+        save_friend_request(request_data)
+
+        send_friend_request_email(from_name, from_email, to_email, request_id)
+
+        return jsonify({
+            'success': True,
+            'message': 'Friend request sent'
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/friends/pending', methods=['GET'])
+def get_pending_requests():
+    try:
+        user_email = request.args.get('user_email')
+
+        pending = []
+        for req_id, req_data in friend_requests.items():
+            if req_data['status'] == 'pending' and req_data['to_email'] == user_email:
+                pending.append(req_data)
+
+        return jsonify({
+            'success': True,
+            'requests': pending
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/friends/accept', methods=['POST'])
+def accept_friend_request():
+    try:
+        data = request.json
+        request_id = data.get('request_id')
+        user_id = data.get('user_id')
+        user_email = data.get('user_email')
+        user_name = data.get('user_name')
+
+        if request_id in friend_requests:
+            req = friend_requests[request_id]
+            req['status'] = 'accepted'
+            save_friend_request(req)
+
+            friendship_id = f"friendship_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            friendship_data = {
+                'id': friendship_id,
+                'user1_id': req['from_user_id'],
+                'user1_email': req['from_email'],
+                'user1_name': req['from_name'],
+                'user2_id': user_id,
+                'user2_email': user_email,
+                'user2_name': user_name,
+                'created_at': datetime.now().isoformat()
+            }
+
+            friendships[friendship_id] = friendship_data
+            save_friendship(friendship_data)
+
+            return jsonify({
+                'success': True,
+                'message': 'Friend request accepted'
+            }), 200
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'Request not found'
+            }), 404
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/friends/list', methods=['GET'])
+def get_friends_list():
+    try:
+        user_id = request.args.get('user_id', 'user123')
+
+        friends = []
+        for friendship_id, friendship_data in friendships.items():
+            friend_info = None
+
+            if friendship_data['user1_id'] == user_id:
+                friend_info = {
+                    'friend_id': friendship_data['user2_id'],
+                    'name': friendship_data['user2_name'],
+                    'email': friendship_data['user2_email']
+                }
+            elif friendship_data['user2_id'] == user_id:
+                friend_info = {
+                    'friend_id': friendship_data['user1_id'],
+                    'name': friendship_data['user1_name'],
+                    'email': friendship_data['user1_email']
+                }
+
+            if friend_info:
+                friend_stats = get_friend_stats(friend_info['friend_id'])
+                friend_info['stats'] = friend_stats
+                friends.append(friend_info)
+
+        return jsonify({
+            'success': True,
+            'friends': friends
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+def get_friend_stats(user_id):
+    try:
+        import glob
+
+        sessions = []
+        session_files = glob.glob('data/sessions/*.json')
+
+        for file_path in session_files:
+            with open(file_path, 'r') as f:
+                session_data = json.load(f)
+                if session_data.get('user_id') == user_id:
+                    sessions.append(session_data)
+
+        if not sessions:
+            return {
+                'top_subject': 'N/A',
+                'total_hours': 0,
+                'avg_focus': 0
+            }
+
+        total_time = sum(s.get('duration_actual', 0) for s in sessions) / 60
+        avg_focus = sum(s.get('focus_score', 0) for s in sessions) / len(sessions)
+
+        subjects = {}
+        for s in sessions:
+            subject = s.get('subject', 'Unknown')
+            subjects[subject] = subjects.get(subject, 0) + 1
+        top_subject = max(subjects, key=subjects.get) if subjects else 'N/A'
+
+        return {
+            'top_subject': top_subject.title(),
+            'total_hours': round(total_time, 1),
+            'avg_focus': round(avg_focus)
+        }
+
+    except Exception as e:
+        print(f"Error getting friend stats: {e}")
+        return {
+            'top_subject': 'N/A',
+            'total_hours': 0,
+            'avg_focus': 0
+        }
+
+def send_friend_request_email(from_name, from_email, to_email, request_id):
+    try:
+        sender_email = from_email
+        sender_password = os.getenv('EMAIL_PASSWORD', '')
+
+        if not sender_password:
+            print("Warning: No email password configured")
+            return
+
+        message = MIMEMultipart("alternative")
+        message["Subject"] = f"{from_name} wants to be your FocusMate friend!"
+        message["From"] = sender_email
+        message["To"] = to_email
+
+        text = f"""
+Hi!
+
+{from_name} ({from_email}) wants to connect with you on FocusMate!
+
+Accept this friend request to share study stats and motivate each other.
+
+Login to FocusMate to accept the request.
+
+Best regards,
+FocusMate Team
+        """
+
+        html = f"""
+<html>
+  <body style="font-family: Arial, sans-serif; padding: 20px;">
+    <h2>Friend Request from {from_name}</h2>
+    <p><strong>{from_name}</strong> ({from_email}) wants to connect with you on FocusMate!</p>
+    <p>Accept this friend request to:</p>
+    <ul>
+      <li>Share study statistics</li>
+      <li>Motivate each other</li>
+      <li>Compare progress</li>
+    </ul>
+    <p>Login to FocusMate to accept the request.</p>
+    <p style="color: #666; font-size: 12px;">Best regards,<br>FocusMate Team</p>
+  </body>
+</html>
+        """
+
+        part1 = MIMEText(text, "plain")
+        part2 = MIMEText(html, "html")
+
+        message.attach(part1)
+        message.attach(part2)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, to_email, message.as_string())
+
+        print(f"Friend request email sent to {to_email}")
+
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 @socketio.on('connect')
 def handle_connect():

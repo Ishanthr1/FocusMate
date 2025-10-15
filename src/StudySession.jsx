@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { useUser } from '@clerk/clerk-react';
 import './StudySession.css';
 
 const socket = io('http://localhost:5000');
 
 function StudySession({ onBack, onNavigateToNotes }) {
+    const { user } = useUser();
     const [currentStep, setCurrentStep] = useState('setup');
     const [sessionConfig, setSessionConfig] = useState({
         duration: 25,
@@ -25,12 +27,24 @@ function StudySession({ onBack, onNavigateToNotes }) {
         posture: 'unknown',
         distraction_level: 0
     });
+    const [musicPlaying, setMusicPlaying] = useState(false);
+    const [currentVolume, setCurrentVolume] = useState(0.5);
 
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const streamRef = useRef(null);
     const timerIntervalRef = useRef(null);
     const frameIntervalRef = useRef(null);
+    const audioRef = useRef(null);
+
+    const musicOptions = {
+        'lofi': 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+        'classical': 'https://www.youtube.com/watch?v=1fDLsg7n2c8',
+        'ambient': 'https://www.youtube.com/watch?v=lTRiuFIWV54',
+        'nature': 'https://www.youtube.com/watch?v=eKFTSSKCzWA',
+        'whitenoise': 'https://www.youtube.com/watch?v=nMfPqeZjc2c',
+        'piano': 'https://www.youtube.com/watch?v=CdDDY5nVA3A'
+    };
 
     const formatTime = (seconds) => {
         const mins = Math.floor(seconds / 60);
@@ -69,6 +83,28 @@ function StudySession({ onBack, onNavigateToNotes }) {
         }
     };
 
+    const playMusic = () => {
+        if (selectedMusic && selectedMusic !== 'none') {
+            const musicUrl = musicOptions[selectedMusic];
+            if (musicUrl) {
+                window.open(musicUrl, '_blank', 'width=400,height=300');
+                setMusicPlaying(true);
+            }
+        }
+    };
+
+    const toggleMusic = () => {
+        setMusicPlaying(!musicPlaying);
+    };
+
+    const handleVolumeChange = (e) => {
+        const newVolume = parseFloat(e.target.value);
+        setCurrentVolume(newVolume);
+        if (audioRef.current) {
+            audioRef.current.volume = newVolume;
+        }
+    };
+
     const sendFrameToBackend = () => {
         if (videoRef.current && canvasRef.current && sessionId) {
             const canvas = canvasRef.current;
@@ -102,7 +138,9 @@ function StudySession({ onBack, onNavigateToNotes }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user_id: 'user123',
+                    user_id: user?.id || 'user123',
+                    user_email: user?.primaryEmailAddress?.emailAddress || 'user@example.com',
+                    user_name: user?.fullName || 'User',
                     duration: sessionConfig.duration,
                     subject: sessionConfig.subject,
                     study_mode: sessionConfig.studyMode,
@@ -116,9 +154,32 @@ function StudySession({ onBack, onNavigateToNotes }) {
             const data = await response.json();
             if (data.success) {
                 setSessionId(data.session_id);
+                console.log('Backend session started:', data.session_id);
             }
         } catch (error) {
             console.error('Error starting backend session:', error);
+        }
+    };
+
+    const endBackendSession = async (completed = false) => {
+        if (sessionId) {
+            try {
+                const response = await fetch('http://localhost:5000/api/session/end', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        completed: completed
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Backend session ended:', data);
+            } catch (error) {
+                console.error('Error ending backend session:', error);
+            }
         }
     };
 
@@ -150,33 +211,18 @@ function StudySession({ onBack, onNavigateToNotes }) {
         }
     };
 
-    const endBackendSession = async (completed = false) => {
-        if (sessionId) {
-            try {
-                const response = await fetch('http://localhost:5000/api/session/end', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        session_id: sessionId,
-                        completed: completed
-                    })
-                });
-
-                const data = await response.json();
-            } catch (error) {
-                console.error('Error ending backend session:', error);
-            }
-        }
-    };
-
     useEffect(() => {
-        socket.on('connect', () => {});
+        socket.on('connect', () => {
+            console.log('Connected to backend');
+        });
 
-        socket.on('connection_response', (data) => {});
+        socket.on('connection_response', (data) => {
+            console.log('Backend connection confirmed:', data);
+        });
 
         socket.on('analysis_result', (data) => {
+            console.log('NEW Analysis result:', data);
+
             setAnalysisData({
                 emotion: data.emotion || 'neutral',
                 posture: data.posture || 'unknown',
@@ -184,6 +230,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
             });
 
             if (data.suggestion) {
+                console.log('💡 Showing suggestion:', data.suggestion);
                 setCurrentSuggestion(data.suggestion);
 
                 setTimeout(() => {
@@ -196,7 +243,9 @@ function StudySession({ onBack, onNavigateToNotes }) {
             console.error('Analysis error:', data.error);
         });
 
-        socket.on('disconnect', () => {});
+        socket.on('disconnect', () => {
+            console.log('Disconnected from backend');
+        });
 
         return () => {
             socket.off('connect');
@@ -232,6 +281,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
         if (currentStep === 'session') {
             startCamera();
             startBackendSession();
+            playMusic();
         }
 
         return () => {
@@ -241,14 +291,11 @@ function StudySession({ onBack, onNavigateToNotes }) {
 
     useEffect(() => {
         if (currentStep === 'session' && sessionId && cameraActive) {
-            const timeoutId = setTimeout(() => {
-                frameIntervalRef.current = setInterval(() => {
-                    sendFrameToBackend();
-                }, 3000);
-            }, 2000);
+            frameIntervalRef.current = setInterval(() => {
+                sendFrameToBackend();
+            }, 3000);
 
             return () => {
-                clearTimeout(timeoutId);
                 if (frameIntervalRef.current) {
                     clearInterval(frameIntervalRef.current);
                 }
@@ -469,13 +516,13 @@ function StudySession({ onBack, onNavigateToNotes }) {
     }
 
     if (currentStep === 'music') {
-        const musicOptions = [
-            { id: 'lofi', name: 'Lo-fi Beats' },
-            { id: 'classical', name: 'Classical Music' },
-            { id: 'ambient', name: 'Ambient Sounds' },
-            { id: 'nature', name: 'Nature Sounds' },
-            { id: 'whitenoise', name: 'White Noise' },
-            { id: 'piano', name: 'Piano Instrumental' }
+        const musicOptionsDisplay = [
+            { id: 'lofi', name: 'Lo-fi Beats', icon: '' },
+            { id: 'classical', name: 'Classical Music', icon: '' },
+            { id: 'ambient', name: 'Ambient Sounds', icon: '' },
+            { id: 'nature', name: 'Nature Sounds', icon: '' },
+            { id: 'whitenoise', name: 'White Noise', icon: '' },
+            { id: 'piano', name: 'Piano Instrumental', icon: '' }
         ];
 
         return (
@@ -485,12 +532,13 @@ function StudySession({ onBack, onNavigateToNotes }) {
                     <p className="form-subtitle">Select background music to help you concentrate</p>
 
                     <div className="music-grid">
-                        {musicOptions.map(music => (
+                        {musicOptionsDisplay.map(music => (
                             <button
                                 key={music.id}
                                 className={`music-card ${selectedMusic === music.id ? 'active' : ''}`}
                                 onClick={() => handleMusicSelection(music.id)}
                             >
+                                <span className="music-preview">{music.icon}</span>
                                 <span className="music-name">{music.name}</span>
                             </button>
                         ))}
@@ -622,6 +670,15 @@ function StudySession({ onBack, onNavigateToNotes }) {
                             </p>
                         )}
                     </div>
+
+                    {selectedMusic && selectedMusic !== 'none' && (
+                        <div className="music-controls">
+                            <p className="music-playing-text">
+                                Playing: {selectedMusic.charAt(0).toUpperCase() + selectedMusic.slice(1)} Music
+                            </p>
+                            <p className="music-note">Music opens in a new window. Adjust volume there.</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="camera-feed">

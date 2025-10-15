@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import {useState, useEffect} from 'react';
+import {useUser} from '@clerk/clerk-react';
 import './Profile.css';
 
 function Profile() {
-    const { user } = useUser();
+    const {user} = useUser();
     const [activeSubTab, setActiveSubTab] = useState('profile');
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
     const [questionnaireData, setQuestionnaireData] = useState(null);
@@ -37,7 +37,7 @@ function Profile() {
         try {
             const response = await fetch('http://localhost:5000/api/profile/questionnaire', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     user_id: user?.id || 'user123',
                     ...answers
@@ -70,7 +70,7 @@ function Profile() {
 
     const fetchPendingRequests = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/friends/pending?user_id=${user?.id || 'user123'}`);
+            const response = await fetch(`http://localhost:5000/api/friends/pending?user_email=${user?.primaryEmailAddress?.emailAddress || 'user@example.com'}`);
             const data = await response.json();
 
             if (data.success) {
@@ -90,7 +90,7 @@ function Profile() {
         try {
             const response = await fetch('http://localhost:5000/api/friends/request', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     from_user_id: user?.id || 'user123',
                     from_email: user?.primaryEmailAddress?.emailAddress || 'user@example.com',
@@ -117,10 +117,12 @@ function Profile() {
         try {
             const response = await fetch('http://localhost:5000/api/friends/accept', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     request_id: requestId,
-                    user_id: user?.id || 'user123'
+                    user_id: user?.id || 'user123',
+                    user_email: user?.primaryEmailAddress?.emailAddress || 'user@example.com',
+                    user_name: user?.fullName || 'User'
                 })
             });
 
@@ -136,7 +138,7 @@ function Profile() {
     };
 
     if (showQuestionnaire) {
-        return <Questionnaire onComplete={handleQuestionnaireSubmit} />;
+        return <Questionnaire onComplete={handleQuestionnaireSubmit}/>;
     }
 
     return (
@@ -162,7 +164,7 @@ function Profile() {
                         <div className="profile-header-section">
                             <div className="profile-avatar">
                                 {user?.imageUrl ? (
-                                    <img src={user.imageUrl} alt="Profile" className="avatar-img" />
+                                    <img src={user.imageUrl} alt="Profile" className="avatar-img"/>
                                 ) : (
                                     <div className="avatar-placeholder">
                                         {user?.firstName?.charAt(0) || 'U'}
@@ -172,7 +174,8 @@ function Profile() {
                             <div className="profile-info">
                                 <h2>{user?.fullName || 'User Name'}</h2>
                                 <p className="profile-email">{user?.primaryEmailAddress?.emailAddress || 'email@example.com'}</p>
-                                <p className="profile-joined">Member since {new Date(user?.createdAt).toLocaleDateString()}</p>
+                                <p className="profile-joined">Member
+                                    since {new Date(user?.createdAt).toLocaleDateString()}</p>
                             </div>
                         </div>
                     </div>
@@ -265,7 +268,7 @@ function Profile() {
                         ) : (
                             <div className="friends-grid">
                                 {friends.map(friend => (
-                                    <FriendCard key={friend.friend_id} friend={friend} />
+                                    <FriendCard key={friend.friend_id} friend={friend}/>
                                 ))}
                             </div>
                         )}
@@ -276,7 +279,7 @@ function Profile() {
     );
 }
 
-function Questionnaire({ onComplete }) {
+function Questionnaire({onComplete}) {
     const [answers, setAnswers] = useState({
         learningStyle: '',
         studyEnvironment: '',
@@ -398,7 +401,7 @@ function Questionnaire({ onComplete }) {
     );
 }
 
-function FriendCard({ friend }) {
+function FriendCard({friend}) {
     return (
         <div className="friend-card">
             <div className="friend-avatar">
