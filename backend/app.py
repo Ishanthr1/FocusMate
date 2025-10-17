@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import cv2
 import numpy as np
 import base64
@@ -31,6 +31,9 @@ from utils.friends_manager import (
     load_all_friendships,
     get_user_by_email
 )
+import secrets
+
+active_rooms = {}
 
 friend_requests = load_all_friend_requests()
 friendships = load_all_friendships()
@@ -770,6 +773,178 @@ FocusMate Team
 
     except Exception as e:
         print(f"Error sending email: {e}")
+
+
+@app.route('/api/study-groups/create', methods=['POST'])
+def create_study_room():
+    try:
+        data = request.json
+        user_id = data.get('user_id', 'user123')
+        user_name = data.get('user_name', 'User')
+
+        room_id = f"room_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+
+        room_data = {
+            'room_id': room_id,
+            'host_id': user_id,
+            'host_name': user_name,
+            'room_name': data.get('roomName'),
+            'subject': data.get('subject'),
+            'duration': data.get('duration', 60),
+            'max_participants': data.get('maxParticipants', 5),
+            'privacy': data.get('privacy', 'friends'),
+            'participants': [{'user_id': user_id, 'name': user_name}],
+            'status': 'active',
+            'created_at': datetime.now().isoformat()
+        }
+
+        active_rooms[room_id] = room_data
+
+        os.makedirs('data/study_rooms', exist_ok=True)
+        with open(f'data/study_rooms/{room_id}.json', 'w') as f:
+            json.dump(room_data, f, indent=2)
+
+        return jsonify({
+            'success': True,
+            'room': room_data
+        }), 201
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/study-groups/list', methods=['GET'])
+def list_study_rooms():
+    try:
+        user_id = request.args.get('user_id', 'user123')
+
+        user_friends = []
+        for friendship_id, friendship_data in friendships.items():
+            if friendship_data['user1_id'] == user_id:
+                user_friends.append(friendship_data['user2_id'])
+            elif friendship_data['user2_id'] == user_id:
+                user_friends.append(friendship_data['user1_id'])
+
+        available_rooms = []
+        for room_id, room_data in active_rooms.items():
+            if room_data['status'] == 'active':
+                if room_data['privacy'] == 'friends':
+                    if room_data['host_id'] in user_friends or room_data['host_id'] == user_id:
+                        available_rooms.append(room_data)
+                else:
+                    available_rooms.append(room_data)
+
+        return jsonify({
+            'success': True,
+            'rooms': available_rooms
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/study-groups/join', methods=['POST'])
+def join_study_room():
+    try:
+        data = request.json
+        room_id = data.get('room_id')
+        user_id = data.get('user_id', 'user123')
+        user_name = data.get('user_name', 'User')
+
+        if room_id not in active_rooms:
+            return jsonify({
+                'success': False,
+                'error': 'Room not found'
+            }), 404
+
+        room = active_rooms[room_id]
+
+        if len(room['participants']) >= room['max_participants']:
+            return jsonify({
+                'success': False,
+                'error': 'Room is full'
+            }), 400
+
+        if not any(p['user_id'] == user_id for p in room['participants']):
+            room['participants'].append({
+                'user_id': user_id,
+                'name': user_name
+            })
+
+        with open(f'data/study_rooms/{room_id}.json', 'w') as f:
+            json.dump(room, f, indent=2)
+
+        return jsonify({
+            'success': True,
+            'room': room
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/study-groups/leave', methods=['POST'])
+def leave_study_room():
+    try:
+        data = request.json
+        room_id = data.get('room_id')
+        user_id = data.get('user_id', 'user123')
+
+        if room_id not in active_rooms:
+            return jsonify({
+                'success': False,
+                'error': 'Room not found'
+            }), 404
+
+        room = active_rooms[room_id]
+        room['participants'] = [p for p in room['participants'] if p['user_id'] != user_id]
+
+        if len(room['participants']) == 0:
+            room['status'] = 'ended'
+            room['ended_at'] = datetime.now().isoformat()
+
+        with open(f'data/study_rooms/{room_id}.json', 'w') as f:
+            json.dump(room, f, indent=2)
+
+        return jsonify({
+            'success': True,
+            'message': 'Left room'
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@socketio.on('join_study_room')
+def handle_join_study_room(data):
+    room_id = data['room_id']
+    join_room(room_id)
+    emit('user_joined', data, room=room_id)
+
+
+@socketio.on('leave_study_room')
+def handle_leave_study_room(data):
+    room_id = data['room_id']
+    leave_room(room_id)
+    emit('user_left', data, room=room_id)
+
+
+@socketio.on('send_room_chat')
+def handle_room_chat(data):
+    room_id = data['room_id']
+    emit('new_room_chat', data, room=room_id)
 
 @socketio.on('connect')
 def handle_connect():

@@ -5,6 +5,7 @@ import Analytics from './Analytics';
 import AIAssistant from './AIAssistant';
 import QuizMaker from './QuizMaker';
 import Profile from './Profile';
+import StudyGroups from './StudyGroups';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -98,6 +99,8 @@ function Dashboard() {
 
                     {activeTab === 'profile' && <Profile />}
 
+                    {activeTab === 'group' && <StudyGroups />}
+
                     {activeTab === 'study' && (
                         <div className="content-card">
                             <div className="coming-soon">
@@ -112,17 +115,6 @@ function Dashboard() {
                                 >
                                     Start Focus Session
                                 </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'group' && (
-                        <div className="content-card">
-                            <div className="coming-soon">
-                                <h2>Coming Soon!</h2>
-                                <p className="feature-description">
-                                    The Study Groups feature is currently under development and will be available soon.
-                                </p>
                             </div>
                         </div>
                     )}
