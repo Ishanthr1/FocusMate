@@ -48,15 +48,23 @@ CORS(app, resources={
     r"/*": {
         "origins": [
             "http://localhost:5173",
-            "https://focus-mate-rho.vercel.app"
-        ]
+            "https://focus-mate-rho.vercel.app",
+            "https://*.vercel.app"  # Allow all Vercel preview deployments
+        ],
+        "supports_credentials": True
     }
 })
 
-socketio = SocketIO(app, cors_allowed_origins=[
-    "http://localhost:5173",
-    "https://focus-mate-rho.vercel.app"
-])
+# Updated SocketIO CORS
+socketio = SocketIO(
+    app,
+    cors_allowed_origins=[
+        "http://localhost:5173",
+        "https://focus-mate-rho.vercel.app",
+        "https://*.vercel.app"
+    ],
+    async_mode='eventlet'
+)
 
 vision_processor = None
 
