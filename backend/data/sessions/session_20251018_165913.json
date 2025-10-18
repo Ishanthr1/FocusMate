@@ -1,0 +1,64 @@
+{
+  "session_id": "session_20251018_165913",
+  "user_id": "user_33wbOankD97NlGCfquyE3zHVOVN",
+  "user_email": "sooramishanth@gmail.com",
+  "user_name": "Ishanth Sooram",
+  "start_time": "2025-10-18T16:59:13.296804",
+  "end_time": "2025-10-18T16:59:31.879219",
+  "duration_planned": 25,
+  "duration_actual": 0.31,
+  "subject": "mathematics",
+  "study_mode": "review",
+  "difficulty": "medium",
+  "break_preference": "yes",
+  "distraction_sensitivity": "medium",
+  "music_choice": "whitenoise",
+  "pauses": [],
+  "breaks": [],
+  "events": [
+    {
+      "type": "detection",
+      "timestamp": "2025-10-18T16:59:16.555983",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-18T16:59:19.515892",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-18T16:59:22.517704",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-18T16:59:25.488376",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-18T16:59:28.495587",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    }
+  ],
+  "emotions_detected": {
+    "neutral": 5
+  },
+  "posture_warnings": 0,
+  "distraction_warnings": 0,
+  "help_requests": 0,
+  "total_paused_time": 0,
+  "focus_score": 100,
+  "completed": false
+}
