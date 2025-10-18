@@ -48,15 +48,16 @@ CORS(app, resources={
     r"/*": {
         "origins": [
             "http://localhost:5173",
-            "https://focus-mate-rho.vercel.app/"
+            "https://focus-mate-rho.vercel.app"
         ]
     }
 })
 
 socketio = SocketIO(app, cors_allowed_origins=[
     "http://localhost:5173",
-    "https://focus-mate-rho.vercel.app/"
+    "https://focus-mate-rho.vercel.app"
 ])
+
 vision_processor = None
 
 def get_vision_processor():
