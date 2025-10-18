@@ -1,0 +1,124 @@
+{
+  "session_id": "session_20251017_214303",
+  "user_id": "user_33wbOankD97NlGCfquyE3zHVOVN",
+  "user_email": "sooramishanth@gmail.com",
+  "user_name": "Ishanth Sooram",
+  "start_time": "2025-10-17T21:43:03.555857",
+  "end_time": "2025-10-17T21:44:19.689468",
+  "duration_planned": 60,
+  "duration_actual": 1.27,
+  "subject": "mathematics",
+  "study_mode": "review",
+  "difficulty": "medium",
+  "break_preference": "no",
+  "distraction_sensitivity": "medium",
+  "music_choice": "lofi",
+  "pauses": [
+    {
+      "timestamp": "2025-10-17T21:44:19.660196",
+      "action": "paused"
+    }
+  ],
+  "breaks": [],
+  "events": [
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:11.632931",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:15.834104",
+      "emotion": "sad",
+      "distraction_level": 0.4,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:27.759242",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:36.863891",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:42.766146",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:48.799901",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:54.757800",
+      "emotion": "sad",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:43:57.763674",
+      "emotion": "sad",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:44:09.774178",
+      "emotion": "angry",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:44:12.763767",
+      "emotion": "angry",
+      "distraction_level": 0.4,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:44:15.732458",
+      "emotion": "neutral",
+      "distraction_level": 0.4,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2025-10-17T21:44:18.765145",
+      "emotion": "neutral",
+      "distraction_level": 0.4,
+      "suggestion": "Stay focused! Keep your eyes on your work."
+    },
+    {
+      "type": "help_requested",
+      "timestamp": "2025-10-17T21:44:19.680306"
+    }
+  ],
+  "emotions_detected": {
+    "neutral": 7,
+    "sad": 3,
+    "angry": 2
+  },
+  "posture_warnings": 0,
+  "distraction_warnings": 2,
+  "help_requests": 1,
+  "total_paused_time": 0,
+  "focus_score": 90,
+  "completed": false
+}

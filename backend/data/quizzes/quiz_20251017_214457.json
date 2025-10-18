@@ -1,0 +1,84 @@
+{
+  "quiz_id": "quiz_20251017_214457",
+  "user_id": "user123",
+  "topic": "Simple addition",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "What is 2 + 3?",
+      "options": [
+        "A) 5",
+        "B) 4",
+        "C) 6",
+        "D) 7"
+      ],
+      "correct_answer": "A",
+      "explanation": "Adding 2 and 3 together gives a total of 5."
+    },
+    {
+      "question": "What is 5 + 1?",
+      "options": [
+        "A) 4",
+        "B) 6",
+        "C) 5",
+        "D) 7"
+      ],
+      "correct_answer": "B",
+      "explanation": "When you add 1 to 5, you get 6."
+    },
+    {
+      "question": "What is 4 + 4?",
+      "options": [
+        "A) 7",
+        "B) 9",
+        "C) 8",
+        "D) 10"
+      ],
+      "correct_answer": "C",
+      "explanation": "Adding 4 to itself (4 + 4) results in 8."
+    },
+    {
+      "question": "What is 7 + 2?",
+      "options": [
+        "A) 8",
+        "B) 10",
+        "C) 9",
+        "D) 6"
+      ],
+      "correct_answer": "C",
+      "explanation": "Counting two steps up from 7 gives 9 (7, 8, 9)."
+    },
+    {
+      "question": "What is 6 + 3?",
+      "options": [
+        "A) 8",
+        "B) 9",
+        "C) 7",
+        "D) 10"
+      ],
+      "correct_answer": "B",
+      "explanation": "Adding 3 to 6 means counting three more: 6, 7, 8, 9. So, 6 + 3 = 9."
+    }
+  ],
+  "created_at": "2025-10-17T21:44:57.383039",
+  "results": [
+    {
+      "quiz_id": "quiz_20251017_214457",
+      "user_answers": {
+        "0": "A",
+        "1": "B",
+        "2": "B",
+        "3": "C",
+        "4": "B"
+      },
+      "score": 4,
+      "time_taken": 0,
+      "completed_at": "2025-10-17T21:45:14.594771",
+      "total_questions": 5,
+      "percentage": 80.0
+    }
+  ]
+}
