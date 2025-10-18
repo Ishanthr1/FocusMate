@@ -49,7 +49,7 @@ CORS(app, resources={
         "origins": [
             "http://localhost:5173",
             "https://focus-mate-rho.vercel.app",
-            "https://*.vercel.app"  # Allow all Vercel preview deployments
+            "https://*.vercel.app"
         ],
         "supports_credentials": True
     }
