@@ -3,8 +3,9 @@ import { useUser } from '@clerk/clerk-react';
 import { JitsiMeeting } from '@jitsi/react-sdk';
 import { io } from 'socket.io-client';
 import './StudyGroups.css';
+import API_URL from './config';
 
-const socket = io('http://localhost:5000');
+const socket = io(API_URL);
 
 function StudyGroups() {
     const { user } = useUser();
@@ -57,7 +58,7 @@ function StudyGroups() {
 
     const fetchRooms = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/study-groups/list?user_id=${user?.id || 'user123'}`);
+            const response = await fetch(`${API_URL}/api/study-groups/list?user_id=${user?.id || 'user123'}`);
             const data = await response.json();
 
             if (data.success) {
@@ -75,7 +76,7 @@ function StudyGroups() {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/study-groups/create', {
+            const response = await fetch(`${API_URL}/api/study-groups/create`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -102,7 +103,7 @@ function StudyGroups() {
 
     const joinRoom = async (room) => {
         try {
-            const response = await fetch('http://localhost:5000/api/study-groups/join', {
+            const response = await fetch(`${API_URL}/api/study-groups/join`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -130,7 +131,7 @@ function StudyGroups() {
         if (!currentRoom) return;
 
         try {
-            await fetch('http://localhost:5000/api/study-groups/leave', {
+            await fetch(`${API_URL}/api/study-groups/leave`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

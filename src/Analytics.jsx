@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Analytics.css';
+import API_URL from './config';
 
 function Analytics() {
     const [sessions, setSessions] = useState([]);
@@ -25,7 +26,7 @@ function Analytics() {
 
     const fetchSessions = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/sessions/all');
+            const response = await fetch(`${API_URL}/api/sessions/all`);
             const data = await response.json();
 
             if (data.success) {
@@ -95,7 +96,7 @@ function Analytics() {
 
     const downloadSingleReport = async (sessionId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/report/single/${sessionId}`);
+            const response = await fetch(`${API_URL}/api/report/single/${sessionId}`);
             const blob = await response.blob();
 
             const url = window.URL.createObjectURL(blob);
@@ -114,7 +115,7 @@ function Analytics() {
 
     const downloadCombinedReport = async (period) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/report/combined/${period}`);
+            const response = await fetch(`${API_URL}/api/report/combined/${period}`);
             const blob = await response.blob();
 
             const url = window.URL.createObjectURL(blob);

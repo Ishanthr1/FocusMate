@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useUser} from '@clerk/clerk-react';
 import './Profile.css';
+import API_URL from './config';
 
 function Profile() {
     const {user} = useUser();
@@ -19,7 +20,7 @@ function Profile() {
 
     const checkQuestionnaire = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/profile/questionnaire?user_id=${user?.id || 'user123'}`);
+            const response = await fetch(`${API_URL}/api/profile/questionnaire?user_id=${user?.id || 'user123'}`);
             const data = await response.json();
 
             if (!data.completed) {
@@ -35,7 +36,7 @@ function Profile() {
 
     const handleQuestionnaireSubmit = async (answers) => {
         try {
-            const response = await fetch('http://localhost:5000/api/profile/questionnaire', {
+            const response = await fetch(`${API_URL}/api/profile/questionnaire`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -57,7 +58,7 @@ function Profile() {
 
     const fetchFriends = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/friends/list?user_id=${user?.id || 'user123'}`);
+            const response = await fetch(`${API_URL}/api/friends/list?user_id=${user?.id || 'user123'}`);
             const data = await response.json();
 
             if (data.success) {
@@ -70,7 +71,7 @@ function Profile() {
 
     const fetchPendingRequests = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/friends/pending?user_email=${user?.primaryEmailAddress?.emailAddress || 'user@example.com'}`);
+            const response = await fetch(`${API_URL}/api/friends/pending?user_email=${user?.primaryEmailAddress?.emailAddress || 'user@example.com'}`);
             const data = await response.json();
 
             if (data.success) {
@@ -88,7 +89,7 @@ function Profile() {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/friends/request', {
+            const response = await fetch(`${API_URL}/api/friends/request`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -115,7 +116,7 @@ function Profile() {
 
     const acceptFriendRequest = async (requestId) => {
         try {
-            const response = await fetch('http://localhost:5000/api/friends/accept', {
+            const response = await fetch(`${API_URL}/api/friends/accept`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({

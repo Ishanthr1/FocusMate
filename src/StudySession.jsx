@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useUser } from '@clerk/clerk-react';
 import './StudySession.css';
+import API_URL from './config';
 
-const socket = io('http://localhost:5000');
+const socket = io(API_URL);
 
 function StudySession({ onBack, onNavigateToNotes }) {
     const { user } = useUser();
@@ -132,7 +133,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
 
     const startBackendSession = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/session/start', {
+            const response = await fetch(`${API_URL}/api/session/start`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -164,7 +165,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
     const endBackendSession = async (completed = false) => {
         if (sessionId) {
             try {
-                const response = await fetch('http://localhost:5000/api/session/end', {
+                const response = await fetch(`${API_URL}/api/session/end`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -186,7 +187,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
     const logPause = async () => {
         if (sessionId) {
             try {
-                await fetch('http://localhost:5000/api/session/pause', {
+                await fetch(`${API_URL}/api/session/pause`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_id: sessionId })
@@ -200,7 +201,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
     const logResume = async () => {
         if (sessionId) {
             try {
-                await fetch('http://localhost:5000/api/session/resume', {
+                await fetch(`${API_URL}/api/session/resume`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_id: sessionId })

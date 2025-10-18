@@ -6,6 +6,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import './AIAssistant.css';
+import API_URL from './config';
 
 function AIAssistant() {
     const [chats, setChats] = useState([]);
@@ -33,7 +34,7 @@ function AIAssistant() {
 
     const fetchUserChats = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/chat/all?user_id=user123');
+            const response = await fetch(`${API_URL}/api/chat/all?user_id=user123`);
             const data = await response.json();
 
             if (data.success) {
@@ -46,7 +47,7 @@ function AIAssistant() {
 
     const createNewChat = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/chat/new', {
+            const response = await fetch(`${API_URL}/api/chat/new`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({user_id: 'user123'})
@@ -66,7 +67,7 @@ function AIAssistant() {
 
     const loadChat = async (chatId) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/chat/history/${chatId}`);
+            const response = await fetch(`${API_URL}/api/chat/history/${chatId}`);
             const data = await response.json();
 
             if (data.success) {
@@ -113,7 +114,7 @@ function AIAssistant() {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/chat/message', {
+            const response = await fetch(`${API_URL}/api/chat/message`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -155,7 +156,7 @@ function AIAssistant() {
         if (!confirm('Delete this chat?')) return;
 
         try {
-            await fetch(`http://localhost:5000/api/chat/delete/${chatId}`, {
+            await fetch(`${API_URL}/api/chat/delete/${chatId}`, {
                 method: 'DELETE'
             });
 

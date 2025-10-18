@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './QuizMaker.css';
+import API_URL from './config';
+
 
 function QuizMaker() {
     const [view, setView] = useState('setup');
@@ -25,7 +27,7 @@ function QuizMaker() {
 
     const fetchQuizHistory = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/quiz/history?user_id=user123');
+            const response = await fetch(`${API_URL}/api/quiz/history?user_id=user123`);
             const data = await response.json();
 
             if (data.success) {
@@ -45,7 +47,7 @@ function QuizMaker() {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/quiz/upload-document', {
+            const response = await fetch(`${API_URL}/api/quiz/upload-document`, {
                 method: 'POST',
                 body: formData
             });
@@ -78,7 +80,7 @@ function QuizMaker() {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/quiz/generate', {
+            const response = await fetch(`${API_URL}/api/quiz/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -119,7 +121,7 @@ function QuizMaker() {
     const handleSubmitQuiz = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/quiz/submit', {
+            const response = await fetch(`${API_URL}/api/quiz/submit`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

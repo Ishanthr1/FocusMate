@@ -44,8 +44,19 @@ report_generator = ReportGenerator()
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:5173",
+            "https://your-frontend-domain.vercel.app"
+        ]
+    }
+})
+
+socketio = SocketIO(app, cors_allowed_origins=[
+    "http://localhost:5173",
+    "https://your-frontend-domain.vercel.app"
+])
 vision_processor = None
 
 def get_vision_processor():
