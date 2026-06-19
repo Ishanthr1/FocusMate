@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+
+# Build output
+dist/
+build/
+.vite/
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.production
+.env.*.local
+backend/.env
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local databases
+backend/*.db
+backend/focusmate.db
