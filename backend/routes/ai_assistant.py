@@ -3,10 +3,11 @@ import os
 from datetime import datetime
 import json
 
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+os.environ["GEMINI_API_KEY"] = "AIzaSyC1ETRPCSVse5n5gYHIx5nGO3KemcEbMHI"
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-model = genai.GenerativeModel('gemini-2.5-flash')
-vision_model = genai.GenerativeModel('gemini-2.5-flash')
+model = genai.GenerativeModel('gemini-2.5-pro')
+vision_model = genai.GenerativeModel('gemini-2.5-pro')
 
 active_chats = {}
 

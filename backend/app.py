@@ -1023,6 +1023,13 @@ def handle_help_request(data):
         })
     emit('help_response', {'message': 'Redirecting to My Notes...'})
 
+
 if __name__ == '__main__':
+    print("=" * 60)
+    print("FocusMate Backend Starting...")
+    print("Server running on http://localhost:5000")
+    print("Vision Processor: ACTIVE")
+    print("=" * 60)
+
     port = int(os.environ.get('PORT', 5000))
     socketio.run(app, host='0.0.0.0', port=port, debug=False)

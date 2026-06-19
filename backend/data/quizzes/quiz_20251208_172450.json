@@ -1,0 +1,83 @@
+{
+  "quiz_id": "quiz_20251208_172450",
+  "user_id": "user123",
+  "topic": "Addtiton",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "medium",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "What is the sum of 347 and 185?",
+      "options": [
+        "A) 522",
+        "B) 432",
+        "C) 532",
+        "D) 422"
+      ],
+      "correct_answer": "C",
+      "explanation": "To find the sum, add the numbers: 347 + 185. Adding the ones place (7+5=12), write down 2 and carry over 1. Adding the tens place (4+8+1=13), write down 3 and carry over 1. Adding the hundreds place (3+1+1=5), write down 5. The total is 532."
+    },
+    {
+      "question": "A fruit vendor sold 278 apples on Monday and 359 apples on Tuesday. How many apples did he sell in total over the two days?",
+      "options": [
+        "A) 537",
+        "B) 627",
+        "C) 637",
+        "D) 527"
+      ],
+      "correct_answer": "C",
+      "explanation": "To find the total number of apples, add the number of apples sold each day: 278 + 359. Adding the ones place (8+9=17), write down 7 and carry over 1. Adding the tens place (7+5+1=13), write down 3 and carry over 1. Adding the hundreds place (2+3+1=6), write down 6. The total is 637 apples."
+    },
+    {
+      "question": "Calculate the sum: 56 + 39 + 72",
+      "options": [
+        "A) 157",
+        "B) 167",
+        "C) 177",
+        "D) 187"
+      ],
+      "correct_answer": "B",
+      "explanation": "Add the numbers sequentially: 56 + 39 = 95. Then, add 95 + 72 = 167. Alternatively, add all the ones digits (6+9+2=17), write 7 carry 1. Add all the tens digits (5+3+7+1 (carried) = 16), write 16. The total is 167."
+    },
+    {
+      "question": "What is 15.7 + 8.9?",
+      "options": [
+        "A) 23.6",
+        "B) 24.6",
+        "C) 23.16",
+        "D) 24.16"
+      ],
+      "correct_answer": "B",
+      "explanation": "Align the decimal points and add the numbers: 15.7 + 8.9. Adding the tenths place (7+9=16), write down 6 and carry over 1 to the ones place. Adding the ones place (5+8+1=14), write down 4 and carry over 1 to the tens place. Adding the tens place (1+1=2), write down 2. The sum is 24.6."
+    },
+    {
+      "question": "If you have 1,365 stamps and buy another 987 stamps, how many stamps do you have in total?",
+      "options": [
+        "A) 2,252",
+        "B) 2,342",
+        "C) 2,352",
+        "D) 2,242"
+      ],
+      "correct_answer": "C",
+      "explanation": "To find the total number of stamps, add the initial number to the new number: 1365 + 987. Adding the ones place (5+7=12), write down 2 and carry over 1. Adding the tens place (6+8+1=15), write down 5 and carry over 1. Adding the hundreds place (3+9+1=13), write down 3 and carry over 1. Adding the thousands place (1+1=2), write down 2. The total is 2,352 stamps."
+    }
+  ],
+  "created_at": "2025-12-08T17:24:50.372223",
+  "results": [
+    {
+      "quiz_id": "quiz_20251208_172450",
+      "user_answers": {
+        "0": "C",
+        "1": "B",
+        "2": "B",
+        "3": "B"
+      },
+      "score": 3,
+      "time_taken": 0,
+      "completed_at": "2025-12-08T17:26:14.506037",
+      "total_questions": 5,
+      "percentage": 60.0
+    }
+  ]
+}

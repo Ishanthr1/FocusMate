@@ -1,14 +1,14 @@
 {
-  "room_id": "room_20251018_152703",
+  "room_id": "room_20251208_172640",
   "host_id": "user_33wbOankD97NlGCfquyE3zHVOVN",
   "host_name": "Ishanth Sooram",
-  "room_name": "b",
-  "subject": "history",
+  "room_name": "hh",
+  "subject": "mathematics",
   "duration": 60,
   "max_participants": 5,
   "privacy": "friends",
   "participants": [],
   "status": "ended",
-  "created_at": "2025-10-18T15:27:03.293425",
-  "ended_at": "2025-10-18T15:27:43.043524"
+  "created_at": "2025-12-08T17:26:40.017505",
+  "ended_at": "2025-12-08T17:26:45.386031"
 }

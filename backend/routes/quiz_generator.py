@@ -3,7 +3,8 @@ import os
 import json
 from datetime import datetime
 
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+os.environ["GEMINI_API_KEY"] = "AIzaSyC1ETRPCSVse5n5gYHIx5nGO3KemcEbMHI"
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 model = genai.GenerativeModel('gemini-2.5-flash')
 
 quiz_history = {}
