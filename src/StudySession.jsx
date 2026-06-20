@@ -17,7 +17,6 @@ function StudySession({ onBack, onNavigateToNotes }) {
         breakPreference: 'yes',
         distractionSensitivity: 'medium'
     });
-    const [selectedMusic, setSelectedMusic] = useState(null);
     const [timeRemaining, setTimeRemaining] = useState(null);
     const [isPaused, setIsPaused] = useState(false);
     const [cameraActive, setCameraActive] = useState(false);
@@ -28,23 +27,39 @@ function StudySession({ onBack, onNavigateToNotes }) {
         posture: 'unknown',
         distraction_level: 0
     });
-    const [musicPlaying, setMusicPlaying] = useState(false);
-    const [currentVolume, setCurrentVolume] = useState(0.5);
+    const [musicPopupOpen, setMusicPopupOpen] = useState(false);
+    const [copiedMusic, setCopiedMusic] = useState(null);
 
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const streamRef = useRef(null);
     const timerIntervalRef = useRef(null);
     const frameIntervalRef = useRef(null);
-    const audioRef = useRef(null);
 
-    const musicOptions = {
-        'lofi': 'https://www.youtube.com/watch?v=sF80I-TQiW0&list=RDsF80I-TQiW0&start_radio=1',
-        'classical': 'https://www.youtube.com/watch?v=mdJU5ogrPMY&list=RDmdJU5ogrPMY&start_radio=1',
-        'ambient': 'https://www.youtube.com/watch?v=sjkrrmBnpGE&list=RDsjkrrmBnpGE&start_radio=1',
-        'nature': 'https://www.youtube.com/watch?v=lE6RYpe9IT0&list=RDlE6RYpe9IT0&start_radio=1',
-        'whitenoise': 'https://www.youtube.com/watch?v=yLOM8R6lbzg',
-        'piano': 'https://www.youtube.com/watch?v=oiGmGFxsJi8&list=RDoiGmGFxsJi8&start_radio=1'
+    const musicOptions = [
+        { id: 'lofi', name: 'Lo-fi Beats', url: 'https://www.youtube.com/watch?v=sF80I-TQiW0&list=RDsF80I-TQiW0&start_radio=1' },
+        { id: 'classical', name: 'Classical Music', url: 'https://www.youtube.com/watch?v=mdJU5ogrPMY&list=RDmdJU5ogrPMY&start_radio=1' },
+        { id: 'ambient', name: 'Ambient Sounds', url: 'https://www.youtube.com/watch?v=sjkrrmBnpGE&list=RDsjkrrmBnpGE&start_radio=1' },
+        { id: 'nature', name: 'Nature Sounds', url: 'https://www.youtube.com/watch?v=lE6RYpe9IT0&list=RDlE6RYpe9IT0&start_radio=1' },
+        { id: 'whitenoise', name: 'White Noise', url: 'https://www.youtube.com/watch?v=yLOM8R6lbzg' },
+        { id: 'piano', name: 'Piano Instrumental', url: 'https://www.youtube.com/watch?v=oiGmGFxsJi8&list=RDoiGmGFxsJi8&start_radio=1' }
+    ];
+
+    const handleCopyMusicLink = async (music) => {
+        try {
+            await navigator.clipboard.writeText(music.url);
+        } catch {
+            const textarea = document.createElement('textarea');
+            textarea.value = music.url;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        setCopiedMusic(music.id);
+        setTimeout(() => setCopiedMusic(null), 2000);
     };
 
     const formatTime = (seconds) => {
@@ -81,28 +96,6 @@ function StudySession({ onBack, onNavigateToNotes }) {
         if (streamRef.current) {
             streamRef.current.getTracks().forEach(track => track.stop());
             setCameraActive(false);
-        }
-    };
-
-    const playMusic = () => {
-        if (selectedMusic && selectedMusic !== 'none') {
-            const musicUrl = musicOptions[selectedMusic];
-            if (musicUrl) {
-                window.open(musicUrl, '_blank', 'width=400,height=300');
-                setMusicPlaying(true);
-            }
-        }
-    };
-
-    const toggleMusic = () => {
-        setMusicPlaying(!musicPlaying);
-    };
-
-    const handleVolumeChange = (e) => {
-        const newVolume = parseFloat(e.target.value);
-        setCurrentVolume(newVolume);
-        if (audioRef.current) {
-            audioRef.current.volume = newVolume;
         }
     };
 
@@ -147,8 +140,7 @@ function StudySession({ onBack, onNavigateToNotes }) {
                     study_mode: sessionConfig.studyMode,
                     difficulty: sessionConfig.difficulty,
                     break_preference: sessionConfig.breakPreference,
-                    distraction_sensitivity: sessionConfig.distractionSensitivity,
-                    music_choice: selectedMusic
+                    distraction_sensitivity: sessionConfig.distractionSensitivity
                 })
             });
 
@@ -282,7 +274,6 @@ function StudySession({ onBack, onNavigateToNotes }) {
         if (currentStep === 'session') {
             startCamera();
             startBackendSession();
-            playMusic();
         }
 
         return () => {
@@ -316,14 +307,6 @@ function StudySession({ onBack, onNavigateToNotes }) {
             alert('Please fill in all required fields!');
             return;
         }
-        setCurrentStep('music');
-    };
-
-    const handleMusicSelection = (music) => {
-        setSelectedMusic(music);
-    };
-
-    const handleStartWithMusic = () => {
         setTimeRemaining(sessionConfig.duration * 60);
         setCurrentStep('session');
     };
@@ -508,65 +491,9 @@ function StudySession({ onBack, onNavigateToNotes }) {
                             className="continue-btn"
                             onClick={handleStartSession}
                         >
-                            Continue to Music Selection
-                        </button>
-                    </form>
-                </div>
-            </div>
-        );
-    }
-
-    if (currentStep === 'music') {
-        const musicOptionsDisplay = [
-            { id: 'lofi', name: 'Lo-fi Beats', icon: '' },
-            { id: 'classical', name: 'Classical Music', icon: '' },
-            { id: 'ambient', name: 'Ambient Sounds', icon: '' },
-            { id: 'nature', name: 'Nature Sounds', icon: '' },
-            { id: 'whitenoise', name: 'White Noise', icon: '' },
-            { id: 'piano', name: 'Piano Instrumental', icon: '' }
-        ];
-
-        return (
-            <div className="study-session">
-                <div className="music-selection-container">
-                    <h2 className="form-title">Choose Your Focus Music</h2>
-                    <p className="form-subtitle">Select background music to help you concentrate</p>
-
-                    <div className="music-grid">
-                        {musicOptionsDisplay.map(music => (
-                            <button
-                                key={music.id}
-                                className={`music-card ${selectedMusic === music.id ? 'active' : ''}`}
-                                onClick={() => handleMusicSelection(music.id)}
-                            >
-                                <span className="music-preview">{music.icon}</span>
-                                <span className="music-name">{music.name}</span>
-                            </button>
-                        ))}
-                    </div>
-
-                    <button
-                        className={`no-music-btn ${selectedMusic === 'none' ? 'active-no-music' : ''}`}
-                        onClick={() => handleMusicSelection('none')}
-                    >
-                        No Music - Silent Study
-                    </button>
-
-                    <div className="music-actions">
-                        <button
-                            className="back-btn"
-                            onClick={() => setCurrentStep('setup')}
-                        >
-                            Back
-                        </button>
-                        <button
-                            className="start-session-btn"
-                            onClick={handleStartWithMusic}
-                            disabled={!selectedMusic}
-                        >
                             Start Focus Session
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         );
@@ -576,6 +503,47 @@ function StudySession({ onBack, onNavigateToNotes }) {
         return (
             <div className="active-session-screen">
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+                <div className={`music-popup ${musicPopupOpen ? 'open' : ''}`}>
+                    {!musicPopupOpen ? (
+                        <button
+                            className="music-popup-toggle"
+                            onClick={() => setMusicPopupOpen(true)}
+                        >
+                            Want music?
+                        </button>
+                    ) : (
+                        <div className="music-popup-panel">
+                            <div className="music-popup-header">
+                                <span className="music-popup-title">Pick a track</span>
+                                <button
+                                    className="music-popup-close"
+                                    onClick={() => setMusicPopupOpen(false)}
+                                    aria-label="Close music picker"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                            <p className="music-popup-hint">
+                                Click one to copy the link, then paste it into a new tab.
+                            </p>
+                            <div className="music-popup-list">
+                                {musicOptions.map(music => (
+                                    <button
+                                        key={music.id}
+                                        className={`music-popup-item ${copiedMusic === music.id ? 'copied' : ''}`}
+                                        onClick={() => handleCopyMusicLink(music)}
+                                    >
+                                        <span>{music.name}</span>
+                                        <span className="music-popup-status">
+                                            {copiedMusic === music.id ? 'Link copied!' : 'Copy link'}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 <div className="timer-container">
                     <div className="session-header">
@@ -672,14 +640,6 @@ function StudySession({ onBack, onNavigateToNotes }) {
                         )}
                     </div>
 
-                    {selectedMusic && selectedMusic !== 'none' && (
-                        <div className="music-controls">
-                            <p className="music-playing-text">
-                                Playing: {selectedMusic.charAt(0).toUpperCase() + selectedMusic.slice(1)} Music
-                            </p>
-                            <p className="music-note">Music opens in a new window. Adjust volume there.</p>
-                        </div>
-                    )}
                 </div>
 
                 <div className="camera-feed">
