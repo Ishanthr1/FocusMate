@@ -20,8 +20,8 @@ Sign in with any email and start a session — webcam access is optional but unl
 - **Real-time focus tracking:** webcam analysis with MediaPipe detects looking away, slouching, and overall distraction level, with live coaching suggestions.
 - **AI study assistant:** Gemini-powered chat that remembers your conversation and works alongside your session.
 - **Quiz generator:** upload a PDF or DOCX and get a multiple-choice quiz back, with results saved to your profile.
-- **Study rooms:** — create or join a room and chat with friends over Socket.IO; optional video via Daily/Jitsi.
-- **Friends + analytics** — friend requests, a session timeline, and progress reports rendered to PDF.
+- **Study rooms:** create or join a room and chat with friends over Socket.IO; optional video via Daily/Jitsi.
+- **Friends + analytics:** friend requests, a session timeline, and progress reports rendered to PDF.
 
 ## Quick start (run locally)
 
