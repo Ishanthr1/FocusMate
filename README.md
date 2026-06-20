@@ -11,7 +11,7 @@ An AI study companion that watches your webcam in real time, flags when you're s
 
 ## Try it
 
-**[Live demo → =focus-mate-gamma.vercel.app]([https://focus-mate-gamma.vercel.app/])**
+**[Live demo → focus-mate-gamma.vercel.app]([https://focus-mate-gamma.vercel.app/])**
 
 Sign in with any email and start a session — webcam access is optional but unlocks focus tracking.
 
