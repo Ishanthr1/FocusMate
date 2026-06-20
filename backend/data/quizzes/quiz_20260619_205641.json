@@ -1,0 +1,84 @@
+{
+  "quiz_id": "quiz_20260619_205641",
+  "user_id": "user123",
+  "topic": "ww2",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "easy",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "In what year did World War II officially begin?",
+      "options": [
+        "A) 1939",
+        "B) 1941",
+        "C) 1935",
+        "D) 1945"
+      ],
+      "correct_answer": "A",
+      "explanation": "World War II began on September 1, 1939, with Germany's invasion of Poland."
+    },
+    {
+      "question": "Who was the leader of Nazi Germany during World War II?",
+      "options": [
+        "A) Benito Mussolini",
+        "B) Winston Churchill",
+        "C) Adolf Hitler",
+        "D) Franklin D. Roosevelt"
+      ],
+      "correct_answer": "C",
+      "explanation": "Adolf Hitler was the dictator of Nazi Germany and a central figure in the start of World War II."
+    },
+    {
+      "question": "Which country launched a surprise attack on Pearl Harbor, bringing the United States into World War II?",
+      "options": [
+        "A) Germany",
+        "B) Italy",
+        "C) Japan",
+        "D) Soviet Union"
+      ],
+      "correct_answer": "C",
+      "explanation": "Japan attacked the U.S. naval base at Pearl Harbor, Hawaii, on December 7, 1941."
+    },
+    {
+      "question": "What was the code name for the Allied invasion of Normandy on June 6, 1944?",
+      "options": [
+        "A) Operation Barbarossa",
+        "B) Operation Torch",
+        "C) Operation Overlord",
+        "D) Operation Market Garden"
+      ],
+      "correct_answer": "C",
+      "explanation": "Operation Overlord was the codename for the Battle of Normandy, which began with the D-Day landings."
+    },
+    {
+      "question": "What new devastating weapon did the United States use against Japan to end World War II?",
+      "options": [
+        "A) Mustard gas",
+        "B) Atomic bomb",
+        "C) Napalm",
+        "D) V2 rockets"
+      ],
+      "correct_answer": "B",
+      "explanation": "The United States dropped atomic bombs on Hiroshima and Nagasaki in August 1945, leading to Japan's surrender."
+    }
+  ],
+  "created_at": "2026-06-19T20:56:41.517987",
+  "results": [
+    {
+      "quiz_id": "quiz_20260619_205641",
+      "user_answers": {
+        "0": "A",
+        "1": "C",
+        "2": "C",
+        "3": "A",
+        "4": "B"
+      },
+      "score": 4,
+      "time_taken": 0,
+      "completed_at": "2026-06-19T20:57:01.295798",
+      "total_questions": 5,
+      "percentage": 80.0
+    }
+  ]
+}

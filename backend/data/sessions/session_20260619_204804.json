@@ -1,0 +1,65 @@
+{
+  "session_id": "session_20260619_204804",
+  "user_id": "user_344yk27LFfllG3nDO5e8vbmWzr1",
+  "user_email": "ishanth5332@chiefscienceofficers.org",
+  "user_name": "Ishanth Sooram",
+  "start_time": "2026-06-19T20:48:04.097878",
+  "end_time": "2026-06-19T20:48:38.579686",
+  "duration_planned": 25,
+  "duration_actual": 0.57,
+  "subject": "science",
+  "study_mode": "practice",
+  "difficulty": "medium",
+  "break_preference": "no",
+  "distraction_sensitivity": "medium",
+  "music_choice": "none",
+  "pauses": [],
+  "breaks": [],
+  "events": [
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:48:09.615368",
+      "emotion": "angry",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:48:10.296190",
+      "emotion": "angry",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:48:13.303674",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:48:19.296706",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:48:34.291508",
+      "emotion": "angry",
+      "distraction_level": 0.4,
+      "suggestion": "You seem stuck. Need help?"
+    }
+  ],
+  "emotions_detected": {
+    "angry": 3,
+    "neutral": 2
+  },
+  "posture_warnings": 0,
+  "distraction_warnings": 0,
+  "help_requests": 0,
+  "total_paused_time": 0,
+  "focus_score": 100,
+  "completed": false
+}

@@ -1,0 +1,44 @@
+{
+  "session_id": "session_20260619_205949",
+  "user_id": "user_344yk27LFfllG3nDO5e8vbmWzr1",
+  "user_email": "ishanth5332@chiefscienceofficers.org",
+  "user_name": "Ishanth Sooram",
+  "start_time": "2026-06-19T20:59:49.219578",
+  "end_time": "2026-06-19T21:00:01.230595",
+  "duration_planned": 25,
+  "duration_actual": 0.2,
+  "subject": "science",
+  "study_mode": "reading",
+  "difficulty": "medium",
+  "break_preference": "yes",
+  "distraction_sensitivity": "medium",
+  "music_choice": "none",
+  "pauses": [],
+  "breaks": [],
+  "events": [
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:59:54.728582",
+      "emotion": "disgust",
+      "distraction_level": 0.0,
+      "suggestion": "You seem stuck. Need help?"
+    },
+    {
+      "type": "detection",
+      "timestamp": "2026-06-19T20:59:58.460380",
+      "emotion": "neutral",
+      "distraction_level": 0.0,
+      "suggestion": "You look tired. Time for a break?"
+    }
+  ],
+  "emotions_detected": {
+    "disgust": 1,
+    "neutral": 1
+  },
+  "posture_warnings": 0,
+  "distraction_warnings": 0,
+  "help_requests": 0,
+  "total_paused_time": 0,
+  "focus_score": 100,
+  "completed": false
+}

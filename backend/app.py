@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -5,8 +10,6 @@ import cv2
 import numpy as np
 import base64
 from datetime import datetime, timedelta
-import os
-from dotenv import load_dotenv
 from utils.vision_processor import VisionProcessor
 from utils.report_generator import ReportGenerator
 import json
@@ -41,7 +44,6 @@ friendships = load_all_friendships()
 questionnaire_data = {}
 
 report_generator = ReportGenerator()
-load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
 CORS(app, resources={

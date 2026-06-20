@@ -1,0 +1,83 @@
+{
+  "quiz_id": "quiz_20260619_205736",
+  "user_id": "user123",
+  "topic": "ww2",
+  "quiz_type": "Multiple Choice",
+  "difficulty": "medium",
+  "question_count": 5,
+  "time_limit": null,
+  "questions": [
+    {
+      "question": "What event officially marked the beginning of World War II in Europe?",
+      "options": [
+        "A) Germany's annexation of Austria (Anschluss)",
+        "B) Japan's invasion of Manchuria",
+        "C) Germany's invasion of Poland",
+        "D) The bombing of Pearl Harbor"
+      ],
+      "correct_answer": "C",
+      "explanation": "Germany's invasion of Poland on September 1, 1939, prompted Britain and France to declare war, initiating World War II in Europe."
+    },
+    {
+      "question": "Which pivotal battle on the Eastern Front is often considered a major turning point, halting the German advance into the Soviet Union?",
+      "options": [
+        "A) Battle of Britain",
+        "B) Battle of Moscow",
+        "C) Battle of Stalingrad",
+        "D) Battle of Kursk"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Battle of Stalingrad (August 1942 \u2013 February 1943) was a brutal and decisive Soviet victory that crippled the German Sixth Army and marked the strategic turning point on the Eastern Front."
+    },
+    {
+      "question": "Before its official entry into World War II, the United States primarily supported Allied efforts through which program?",
+      "options": [
+        "A) The Dawes Plan",
+        "B) The Marshall Plan",
+        "C) The Lend-Lease Act",
+        "D) The Neutrality Acts"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Lend-Lease Act, passed in March 1941, allowed the U.S. to supply Allied nations with war materials on credit or without immediate payment, while officially remaining neutral."
+    },
+    {
+      "question": "Often cited as the turning point in the Pacific Theater, which naval battle significantly weakened Japan's carrier fleet and shifted the balance of power?",
+      "options": [
+        "A) Battle of Coral Sea",
+        "B) Battle of Iwo Jima",
+        "C) Battle of Midway",
+        "D) Attack on Pearl Harbor"
+      ],
+      "correct_answer": "C",
+      "explanation": "The Battle of Midway in June 1942 was a decisive victory for the U.S. Navy, sinking four Japanese aircraft carriers and marking a strategic turning point in the Pacific War."
+    },
+    {
+      "question": "What unprecedented weapon was used by the United States against the cities of Hiroshima and Nagasaki in August 1945, leading to Japan's unconditional surrender?",
+      "options": [
+        "A) Napalm bombs",
+        "B) Chemical weapons",
+        "C) Atomic bombs",
+        "D) V-2 rockets"
+      ],
+      "correct_answer": "C",
+      "explanation": "The atomic bombs dropped on Hiroshima (August 6, 1945) and Nagasaki (August 9, 1945) caused immense destruction and prompted Japan to surrender, effectively ending World War II."
+    }
+  ],
+  "created_at": "2026-06-19T20:57:36.918403",
+  "results": [
+    {
+      "quiz_id": "quiz_20260619_205736",
+      "user_answers": {
+        "0": "A",
+        "1": "C",
+        "2": "B",
+        "3": "D"
+      },
+      "score": 1,
+      "time_taken": 0,
+      "completed_at": "2026-06-19T20:57:44.422194",
+      "total_questions": 5,
+      "percentage": 20.0
+    }
+  ]
+}

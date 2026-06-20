@@ -39,12 +39,12 @@ function StudySession({ onBack, onNavigateToNotes }) {
     const audioRef = useRef(null);
 
     const musicOptions = {
-        'lofi': 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
-        'classical': 'https://www.youtube.com/watch?v=1fDLsg7n2c8',
-        'ambient': 'https://www.youtube.com/watch?v=lTRiuFIWV54',
-        'nature': 'https://www.youtube.com/watch?v=eKFTSSKCzWA',
-        'whitenoise': 'https://www.youtube.com/watch?v=nMfPqeZjc2c',
-        'piano': 'https://www.youtube.com/watch?v=CdDDY5nVA3A'
+        'lofi': 'https://www.youtube.com/watch?v=sF80I-TQiW0&list=RDsF80I-TQiW0&start_radio=1',
+        'classical': 'https://www.youtube.com/watch?v=mdJU5ogrPMY&list=RDmdJU5ogrPMY&start_radio=1',
+        'ambient': 'https://www.youtube.com/watch?v=sjkrrmBnpGE&list=RDsjkrrmBnpGE&start_radio=1',
+        'nature': 'https://www.youtube.com/watch?v=lE6RYpe9IT0&list=RDlE6RYpe9IT0&start_radio=1',
+        'whitenoise': 'https://www.youtube.com/watch?v=yLOM8R6lbzg',
+        'piano': 'https://www.youtube.com/watch?v=oiGmGFxsJi8&list=RDoiGmGFxsJi8&start_radio=1'
     };
 
     const formatTime = (seconds) => {
