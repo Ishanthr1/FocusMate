@@ -2,11 +2,8 @@
 
 An AI study companion that watches your webcam in real time, flags when you're slouching or distracted, and pairs you with an AI tutor, quiz maker, and shared study rooms.
 
-<!--
-  TODO: drop a screenshot or GIF of the dashboard / a live study session here.
-  Save it to public/screenshot.png and uncomment the line below.
-  ![FocusMate screenshot](public/screenshot.png)
--->
+![FocusMate demo](public/giphy.gif)
+
 
 
 ## Try it
