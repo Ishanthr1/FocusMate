@@ -2,9 +2,9 @@
 
 An AI study companion that watches your webcam in real time, flags when you're slouching or distracted, and pairs you with an AI tutor, quiz maker, and shared study rooms.
 
-![FocusMate demo](public/giphy.gif)
+![FocusMate demo](./public/giphy.gif)
 
-## Try it
+I ## Try it
 
 [Live demo → focus-mate-gamma.vercel.app](https://focus-mate-gamma.vercel.app/)
 
