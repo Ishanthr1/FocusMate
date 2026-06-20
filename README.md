@@ -4,7 +4,7 @@ An AI study companion that watches your webcam in real time, flags when you're s
 
 ![FocusMate demo](./public/giphy.gif)
 
-I ## Try it
+## Try it
 
 [Live demo → focus-mate-gamma.vercel.app](https://focus-mate-gamma.vercel.app/)
 
