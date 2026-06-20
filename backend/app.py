@@ -35,6 +35,7 @@ from utils.friends_manager import (
     get_user_by_email
 )
 import secrets
+import re
 
 active_rooms = {}
 
@@ -46,25 +47,27 @@ questionnaire_data = {}
 report_generator = ReportGenerator()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
+# Match localhost dev + any vercel.app subdomain (handles Vercel preview URLs).
+VERCEL_ORIGIN_REGEX = re.compile(r"^https://([a-zA-Z0-9-]+\.)*vercel\.app$")
+LOCAL_DEV_ORIGIN = "http://localhost:5173"
+
 CORS(app, resources={
     r"/*": {
-        "origins": [
-            "http://localhost:5173",
-            "https://focus-mate-rho.vercel.app",
-            "https://*.vercel.app"
-        ],
+        "origins": [LOCAL_DEV_ORIGIN, VERCEL_ORIGIN_REGEX],
         "supports_credentials": True
     }
 })
 
-# Updated SocketIO CORS
+# python-socketio does exact-string matching on cors_allowed_origins and does
+# not support regex or globs, so use a callable to allow any *.vercel.app host.
+def _socketio_cors_allowed(origin):
+    if origin == LOCAL_DEV_ORIGIN:
+        return True
+    return bool(VERCEL_ORIGIN_REGEX.match(origin or ""))
+
 socketio = SocketIO(
     app,
-    cors_allowed_origins=[
-        "http://localhost:5173",
-        "https://focus-mate-rho.vercel.app",
-        "https://*.vercel.app"
-    ],
+    cors_allowed_origins=_socketio_cors_allowed,
     async_mode='eventlet'
 )
 
