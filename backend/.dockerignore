@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.*
+.DS_Store
+data/chats/
+data/profiles/
+data/study_rooms/
